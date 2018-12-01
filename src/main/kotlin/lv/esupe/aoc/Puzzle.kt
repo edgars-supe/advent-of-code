@@ -1,5 +1,7 @@
 package lv.esupe.aoc
 
+import lv.esupe.aoc.utils.getInput
+
 
 abstract class Puzzle<T>(year: Int, day: Int, puzzle: Int) {
     val identifier = "Year $year, day $day, puzzle $puzzle"

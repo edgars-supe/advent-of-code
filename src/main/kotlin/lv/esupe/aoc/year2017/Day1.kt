@@ -1,7 +1,7 @@
 package lv.esupe.aoc.year2017
 
 import lv.esupe.aoc.Puzzle
-import lv.esupe.aoc.toIntValue
+import lv.esupe.aoc.utils.toIntValue
 
 fun main(args: Array<String>) {
     Day1Puzzle1().calculateAndPrint()

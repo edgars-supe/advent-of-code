@@ -1,7 +1,7 @@
 package lv.esupe.aoc.year2018
 
 import lv.esupe.aoc.Puzzle
-import lv.esupe.aoc.asInfiniteSequence
+import lv.esupe.aoc.utils.asInfiniteSequence
 
 
 fun main(args: Array<String>) {
