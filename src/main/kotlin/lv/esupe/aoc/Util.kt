@@ -5,7 +5,7 @@ import java.nio.file.Paths
 
 
 fun getInput(year: Int, day: Int, puzzle: Int): List<String> =
-    Any::class.java.classLoader.getResource("year$year/d${day}p$puzzle")
+    Puzzle::class.java.classLoader.getResource("input/year$year/d${day}p$puzzle.in")
         .toURI()
         .let { Paths.get(it) }
         .let { Files.readAllLines(it) }
