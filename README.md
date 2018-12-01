@@ -1,2 +1,2 @@
-# advent-of-code
-My Advent of Code entries
+# Advent Of Code
+These are my entries for [Advent of Code](https://adventofcode.com), written in Kotlin. 
