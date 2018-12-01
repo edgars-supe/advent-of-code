@@ -5,8 +5,8 @@ import lv.esupe.aoc.asInfiniteSequence
 
 
 fun main(args: Array<String>) {
-    Day1Puzzle1().calculate().let { println("Day 1, Puzzle 1: $it") }
-    Day1Puzzle2().calculate().let { println("Day 1, Puzzle 2: $it") }
+    Day1Puzzle1().calculateAndPrint()
+    Day1Puzzle2().calculateAndPrint()
 }
 
 class Day1Puzzle1 : Puzzle<Int>(2018, 1, 1) {
