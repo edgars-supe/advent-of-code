@@ -9,3 +9,8 @@ fun getInput(year: Int, day: Int, puzzle: Int): List<String> =
         .toURI()
         .let { Paths.get(it) }
         .let { Files.readAllLines(it) }
+
+fun <T : Any> List<T>.asInfiniteSequence(): Sequence<T> {
+    var index = 0
+    return generateSequence(get(index)) { get(++index % size) }
+}

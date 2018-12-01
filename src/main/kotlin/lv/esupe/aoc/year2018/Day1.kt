@@ -1,6 +1,7 @@
 package lv.esupe.aoc.year2018
 
 import lv.esupe.aoc.Puzzle
+import lv.esupe.aoc.asInfiniteSequence
 
 
 fun main(args: Array<String>) {
@@ -16,10 +17,9 @@ class Day1Puzzle1 : Puzzle<Int>(2018, 1, 1) {
 
 class Day1Puzzle2 : Puzzle<Int>(2018, 1, 2) {
     override fun calculate(): Int {
-        var index = 0
         val set = HashSet<Int>()
-        val list = input.map { it.toInt() }
-        generateSequence(list[index]) { list[(++index) % list.size] }
+        input.map { it.toInt() }
+            .asInfiniteSequence()
             .fold(0) { acc, i ->
                 if (set.contains(acc)) return acc
                 set.add(acc)
