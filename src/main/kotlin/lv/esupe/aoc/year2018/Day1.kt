@@ -10,9 +10,7 @@ fun main(args: Array<String>) {
 }
 
 class Day1Puzzle1 : Puzzle<Int>(2018, 1, 1) {
-    override fun calculate(): Int =
-        input.map { it.toInt() }
-            .reduce { acc, i -> acc + i }
+    override fun calculate(): Int = input.map { it.toInt() }.sum()
 }
 
 class Day1Puzzle2 : Puzzle<Int>(2018, 1, 2) {
