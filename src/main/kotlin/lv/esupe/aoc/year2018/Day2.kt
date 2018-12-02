@@ -2,7 +2,7 @@ package lv.esupe.aoc.year2018
 
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.utils.charByChar
-import lv.esupe.aoc.utils.withAllOtherElements
+import lv.esupe.aoc.utils.forAllPairs
 
 
 fun main(args: Array<String>) {
@@ -27,7 +27,7 @@ class Day2Puzzle1 : Puzzle<Int>(2018, 2, 1) {
 class Day2Puzzle2 : Puzzle<String>(2018, 2, 2) {
     override fun calculate(): String {
         var pair: Pair<String, String>? = null
-        input.withAllOtherElements { s1, s2 ->
+        input.forAllPairs { s1, s2 ->
             var hasOneDiscrepancy = false
             for (idx in 0 until s1.length) {
                 val c = s1[idx]

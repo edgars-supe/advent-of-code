@@ -1,7 +1,7 @@
 package lv.esupe.aoc.year2017
 
 import lv.esupe.aoc.Puzzle
-import lv.esupe.aoc.utils.withAllOtherElements
+import lv.esupe.aoc.utils.forAllPairs
 
 fun main(args: Array<String>) {
     Day2Puzzle1().calculateAndPrint()
@@ -19,7 +19,7 @@ class Day2Puzzle2 : Puzzle<Int>(2017, 2, 2) {
     override fun calculate(): Int =
         input.toIntRows()
             .map { row ->
-                row.withAllOtherElements { i, j ->
+                row.forAllPairs { i, j ->
                     val max = maxOf(i, j)
                     val min = minOf(i, j)
                     if (max % min == 0) return@map max / min
