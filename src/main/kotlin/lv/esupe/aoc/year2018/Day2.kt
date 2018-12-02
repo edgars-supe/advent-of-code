@@ -16,7 +16,6 @@ class Day2Puzzle1 : Puzzle<Int>(2018, 2, 1) {
         var threes = 0
         input.forEach { id ->
             id.map { c -> id.count { c1 -> c == c1 } }
-                .distinct()
                 .let {
                     if (it.contains(2)) twos++
                     if (it.contains(3)) threes++
