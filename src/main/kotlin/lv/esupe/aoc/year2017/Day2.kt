@@ -20,7 +20,9 @@ class Day2Puzzle2 : Puzzle<Int>(2017, 2, 2) {
         input.toIntRows()
             .map { row ->
                 row.withAllOtherElements { i, j ->
-                    if (i % j == 0 && i > j) return@map i / j
+                    val max = maxOf(i, j)
+                    val min = minOf(i, j)
+                    if (max % min == 0) return@map max / min
                 }
                 return@map 0
             }

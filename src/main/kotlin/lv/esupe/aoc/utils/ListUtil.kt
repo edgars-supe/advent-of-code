@@ -7,9 +7,9 @@ fun <T : Any> List<T>.asInfiniteSequence(): Sequence<T> {
 }
 
 inline fun <T> List<T>.withAllOtherElements(block: (T, T) -> Unit) {
-    forEachIndexed { idx1, i ->
-        forEachIndexed { idx2, j ->
-            if (idx1 != idx2) block(i, j)
+    for (i in 0 until size) {
+        for (j in (i + 1) until size) {
+            block(get(i), get(j))
         }
     }
 }
