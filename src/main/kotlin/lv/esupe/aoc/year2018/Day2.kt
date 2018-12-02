@@ -1,8 +1,8 @@
 package lv.esupe.aoc.year2018
 
 import lv.esupe.aoc.Puzzle
-import lv.esupe.aoc.utils.charByChar
 import lv.esupe.aoc.utils.forAllPairs
+import lv.esupe.aoc.utils.asString
 
 
 fun main(args: Array<String>) {
@@ -14,11 +14,13 @@ class Day2Puzzle1 : Puzzle<Int>(2018, 2, 1) {
     override fun calculate(): Int {
         var twos = 0
         var threes = 0
-        input.forEach {
-            it.forEach { c ->
-                if (it.count { c1 -> c == c1 } == 2) twos++
-                else if (it.count { c1 -> c == c1 } == 3) threes++
-            }
+        input.forEach { id ->
+            id.map { c -> id.count { c1 -> c == c1 } }
+                .distinct()
+                .let {
+                    if (it.contains(2)) twos++
+                    if (it.contains(3)) threes++
+                }
         }
         return twos * threes
     }
@@ -26,26 +28,18 @@ class Day2Puzzle1 : Puzzle<Int>(2018, 2, 1) {
 
 class Day2Puzzle2 : Puzzle<String>(2018, 2, 2) {
     override fun calculate(): String {
-        var pair: Pair<String, String>? = null
         input.forAllPairs { s1, s2 ->
-            var hasOneDiscrepancy = false
-            for (idx in 0 until s1.length) {
-                val c = s1[idx]
-                if (s2[idx] != c && hasOneDiscrepancy) {
-                    hasOneDiscrepancy = false
-                    break
-                } else if (s2[idx] != c && !hasOneDiscrepancy) {
-                    hasOneDiscrepancy = true
-                }
-            }
-            if (hasOneDiscrepancy) pair = Pair(s1, s2)
+            s1.zip(s2)
+                .takeIf { pair -> pair.count { it.first != it.second } == 1 }
+                ?.unzip()
+                ?.let { it.first.asString() to it.second.asString() }
+                ?.let { return it.filterMatchingChars() }
         }
-        var id = ""
-        if (pair != null) {
-            pair!!.first.charByChar(pair!!.second) { c1, c2 ->
-                if (c1 == c2 && c1 != null) id += c1
-            }
-        }
-        return id
+        throw Exception("Christmas is cancelled")
     }
+
+    private fun Pair<String, String>.filterMatchingChars(): String = first.zip(second)
+        .filter { it.first == it.second }
+        .map { it.first }
+        .asString()
 }

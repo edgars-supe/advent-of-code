@@ -13,6 +13,8 @@ fun getInput(year: Int, day: Int, puzzle: Int): List<String> =
 
 fun Char.toIntValue(): Int = toInt() - 48
 
+fun List<Char>.asString(): String = joinToString(separator = "")
+
 inline fun String.charByChar(other: String, crossinline block: (Char?, Char?) -> Unit) {
     val max = maxOf(length, other.length)
     for (i in 0 until max) {
