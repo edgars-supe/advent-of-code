@@ -1,8 +1,8 @@
 package lv.esupe.aoc.year2018
 
 import lv.esupe.aoc.Puzzle
-import lv.esupe.aoc.utils.forAllPairs
 import lv.esupe.aoc.utils.asString
+import lv.esupe.aoc.utils.forAllPairs
 
 
 fun main(args: Array<String>) {

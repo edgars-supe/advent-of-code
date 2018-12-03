@@ -15,6 +15,8 @@ fun Char.toIntValue(): Int = toInt() - 48
 
 fun List<Char>.asString(): String = joinToString(separator = "")
 
+fun CharArray.asString(): String = String(this)
+
 inline fun String.charByChar(other: String, crossinline block: (Char?, Char?) -> Unit) {
     val max = maxOf(length, other.length)
     for (i in 0 until max) {
