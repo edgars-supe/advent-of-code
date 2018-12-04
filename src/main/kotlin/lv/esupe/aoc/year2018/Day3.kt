@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
 
 class Day3Puzzle1 : Puzzle<Int>(2018, 3, 1) {
     override fun calculate(): Int {
-        val sheet: Array<Array<Int>> = Array(1000) { Array(1000) { 0 } }
+        val sheet = createSheet()
         input.map { it.toClaim() }
             .forEach { sheet.plotClaim(it) }
         return sheet.sumBy { it.count { cell -> cell > 1 } }
@@ -19,7 +19,7 @@ class Day3Puzzle1 : Puzzle<Int>(2018, 3, 1) {
 
 class Day3Puzzle2 : Puzzle<String>(2018, 3, 2) {
     override fun calculate(): String {
-        val sheet: Array<Array<Int>> = Array(1000) { Array(1000) { 0 } }
+        val sheet = createSheet()
         val claims = input.map { it.toClaim() }
         claims.forEach { sheet.plotClaim(it) }
         return claims.first { sheet.hasNoOverlap(it) }.id
@@ -33,6 +33,8 @@ data class Claim(
     val width: Int,
     val height: Int
 )
+
+private fun createSheet() = Array(1000) { Array(1000) { 0 } }
 
 private fun String.toClaim(): Claim = split(" ")
     .let {
