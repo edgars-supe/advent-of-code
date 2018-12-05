@@ -3,6 +3,8 @@ package lv.esupe.aoc.utils
 import lv.esupe.aoc.Puzzle
 import java.nio.file.Files
 import java.nio.file.Paths
+import kotlin.system.measureNanoTime
+import kotlin.system.measureTimeMillis
 
 
 fun getInput(year: Int, day: Int, puzzle: Int): List<String> =
@@ -25,3 +27,6 @@ inline fun String.charByChar(other: String, crossinline block: (Char?, Char?) ->
         block(c1, c2)
     }
 }
+
+fun benchmark(block: () -> Unit) = measureTimeMillis { block() }.let { println(it) }
+fun benchmarkNano(block: () -> Unit) = measureNanoTime { block() }.let { println(it) }
