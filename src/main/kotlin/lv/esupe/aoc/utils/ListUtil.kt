@@ -1,5 +1,8 @@
 package lv.esupe.aoc.utils
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+
 
 fun <T : Any> List<T>.asInfiniteSequence(): Sequence<T> {
     var index = 0
@@ -19,4 +22,8 @@ inline fun <T> List<T>.forAllUniquePairs(block: (T, T) -> Unit) {
         block(i, j)
         block(j, i)
     }
+}
+
+fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = runBlocking {
+    map { async { f(it) } }.map { it.await() }
 }
