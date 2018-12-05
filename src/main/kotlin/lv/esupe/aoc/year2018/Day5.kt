@@ -16,41 +16,39 @@ class Day5Puzzle1 : Puzzle<Int>(2018, 5, 1) {
 class Day5Puzzle2 : Puzzle<Int>(2018, 5, 2) {
     override fun calculate(): Int =
         ('a'..'z').map {
-            input.first()
-                .filterNot { c -> c.toLowerCase() == it }
-                .destroyUnits()
-                .length
-        }
-            .minBy { it }!!
+                input.first()
+                    .filterNot { c -> c.toLowerCase() == it }
+                    .destroyUnits()
+                    .length
+            }.minBy { it }!!
 }
 
 private fun String.destroyUnits(): String {
     var polymer = this
-    var destroyed = polymer.destroyFirstPair()
+    var destroyed = polymer.destroyUnitsSinglePass()
     while (polymer.length > destroyed.length) {
         polymer = destroyed
-        destroyed = destroyed.destroyFirstPair()
+        destroyed = destroyed.destroyUnitsSinglePass()
     }
     return destroyed
 }
 
-private fun String.destroyFirstPair(): String {
-    var idx = -1
-    for (i in 0 until length) {
-        if (get(i).sameCharDifferentCase(getOrNull(i + 1))) {
-            idx = i
-            break
+private fun String.destroyUnitsSinglePass(): String {
+    val sb = StringBuilder()
+    var idx = 0
+    while (idx < length) {
+        if (get(idx).isReverseCase(getOrNull(idx + 1))) {
+            idx += 2
+        } else {
+            sb.append(get(idx))
+            idx++
         }
     }
-    if (idx > -1) {
-        return removeRange(idx, idx + 2)
-    } else return this
-
+    return sb.toString()
 }
 
-private fun Char.sameCharDifferentCase(other: Char?): Boolean {
-    if (other == null) return false
-    if (isLowerCase()) return other.isUpperCase() && this.toUpperCase() == other
-    else if (isUpperCase()) return other.isLowerCase() && this.toLowerCase() == other
-    return false
-}
+private fun Char.isReverseCase(other: Char?): Boolean = other == reverseCase()
+
+private fun Char.reverseCase(): Char =
+    if (isLowerCase()) toUpperCase()
+    else toLowerCase()
