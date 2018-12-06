@@ -35,3 +35,11 @@ fun <T> Array<Array<T>>.forEachIndexed(action: (Int, Int, T) -> Unit) {
         }
     }
 }
+
+fun IntRange.over(other: IntRange, action: (Int, Int) -> Unit) {
+    for (i in this) {
+        for (j in other) {
+            action(i, j)
+        }
+    }
+}
