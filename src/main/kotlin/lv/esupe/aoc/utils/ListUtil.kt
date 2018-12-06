@@ -25,6 +25,8 @@ inline fun <T> List<T>.forAllUniquePairs(block: (T, T) -> Unit) {
     }
 }
 
+fun <T> List<T>.countOf(element: T): Int = count { it == element }
+
 fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = runBlocking(Dispatchers.Default) {
     map { async { f(it) } }.map { it.await() }
 }
