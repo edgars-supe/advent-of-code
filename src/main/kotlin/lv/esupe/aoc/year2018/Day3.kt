@@ -3,27 +3,16 @@ package lv.esupe.aoc.year2018
 import lv.esupe.aoc.Puzzle
 
 
-fun main(args: Array<String>) {
-    Day3Puzzle1().calculateAndPrint()
-    Day3Puzzle2().calculateAndPrint()
-}
+fun main(args: Array<String>) = Day3().solve()
 
-class Day3Puzzle1 : Puzzle<Int>(2018, 3, 1) {
-    override fun calculate(): Int {
-        val sheet = createSheet()
-        input.map { it.toClaim() }
-            .forEach { sheet.plotClaim(it) }
-        return sheet.sumBy { it.count { cell -> cell > 1 } }
-    }
-}
+class Day3 : Puzzle<Int, String>(2018, 3) {
+    override val input = rawInput.map { it.toClaim() }
+    val sheet = createSheet().apply { input.forEach { plotClaim(it) } }
 
-class Day3Puzzle2 : Puzzle<String>(2018, 3, 2) {
-    override fun calculate(): String {
-        val sheet = createSheet()
-        val claims = input.map { it.toClaim() }
-        claims.forEach { sheet.plotClaim(it) }
-        return claims.first { sheet.hasNoOverlap(it) }.id
-    }
+    override fun solvePartOne(): Int = sheet.sumBy { it.count { cell -> cell > 1 } }
+
+
+    override fun solvePartTwo(): String = input.first { sheet.hasNoOverlap(it) }.id
 }
 
 data class Claim(

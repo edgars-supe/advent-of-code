@@ -2,18 +2,19 @@ package lv.esupe.aoc.year2017
 
 import lv.esupe.aoc.Puzzle
 
-fun main(args: Array<String>) {
-    Day6Puzzle1().calculateAndPrint()
-    Day6Puzzle2().calculateAndPrint()
-}
+fun main(args: Array<String>) = Day6().solve()
 
-class Day6Puzzle1 : Puzzle<Int>(2017, 6, 1) {
-    override fun calculate(): Int = input.first()
+class Day6 : Puzzle<Int, Int>(2017, 6) {
+    override val input = rawInput
+        .first()
         .split("\t")
         .map { it.toInt() }
-        .redistribute()
 
-    private fun List<Int>.redistribute(): Int {
+    override fun solvePartOne(): Int = input.redistributePartOne()
+
+    override fun solvePartTwo(): Int = input.redistributePartTwo()
+
+    private fun List<Int>.redistributePartOne(): Int {
         var cycles = 0
         val bankSet = mutableSetOf<List<Int>>()
         var banks = this
@@ -32,15 +33,8 @@ class Day6Puzzle1 : Puzzle<Int>(2017, 6, 1) {
         }
         return cycles
     }
-}
 
-class Day6Puzzle2 : Puzzle<Int>(2017, 6, 2) {
-    override fun calculate(): Int = input.first()
-        .split("\t")
-        .map { it.toInt() }
-        .redistribute()
-
-    private fun List<Int>.redistribute(): Int {
+    private fun List<Int>.redistributePartTwo(): Int {
         var cycles = 0
         val bankSet = mutableMapOf<List<Int>, Int>()
         var banks = this
@@ -61,4 +55,3 @@ class Day6Puzzle2 : Puzzle<Int>(2017, 6, 2) {
         return cycles - bankSet[banks]!!
     }
 }
-

@@ -4,14 +4,13 @@ import lv.esupe.aoc.Puzzle
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 
-fun main(args: Array<String>) {
-    Day3Puzzle1().calculateAndPrint()
-    Day3Puzzle2().calculateAndPrint()
-}
+fun main(args: Array<String>) = Day3().solve()
 
-class Day3Puzzle1 : Puzzle<Int>(2017, 3, 1) {
-    override fun calculate(): Int {
-        val target = input.first().toInt()
+class Day3 : Puzzle<Int, Int>(2017, 3) {
+    override val input = rawInput.first().toInt()
+
+    override fun solvePartOne(): Int {
+        val target = input
         val level = level(target)
         val floor = (level.max - 2).toFloat().pow(2).toInt()
         val ceiling = level.max.toFloat().pow(2).toInt()
@@ -33,6 +32,8 @@ class Day3Puzzle1 : Puzzle<Int>(2017, 3, 1) {
             }
     }
 
+    override fun solvePartTwo(): Int = 0
+
     private fun level(target: Int): Level {
         var level = 0
         var incr = 1f
@@ -44,8 +45,4 @@ class Day3Puzzle1 : Puzzle<Int>(2017, 3, 1) {
     }
 
     data class Level(val level: Int, val max: Int)
-}
-
-class Day3Puzzle2 : Puzzle<Int>(2017, 3, 2) {
-    override fun calculate(): Int = 0
 }

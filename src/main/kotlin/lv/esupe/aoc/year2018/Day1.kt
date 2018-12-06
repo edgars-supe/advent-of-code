@@ -5,19 +5,17 @@ import lv.esupe.aoc.utils.asInfiniteSequence
 
 
 fun main(args: Array<String>) {
-    Day1Puzzle1().calculateAndPrint()
-    Day1Puzzle2().calculateAndPrint()
+    Day1().solve()
 }
 
-class Day1Puzzle1 : Puzzle<Int>(2018, 1, 1) {
-    override fun calculate(): Int = input.map { it.toInt() }.sum()
-}
+class Day1 : Puzzle<Int, Int>(2018, 1) {
+    override val input = rawInput.map { it.toInt() }
 
-class Day1Puzzle2 : Puzzle<Int>(2018, 1, 2) {
-    override fun calculate(): Int {
+    override fun solvePartOne(): Int = input.sum()
+
+    override fun solvePartTwo(): Int {
         val set = HashSet<Int>()
-        input.map { it.toInt() }
-            .asInfiniteSequence()
+        input.asInfiniteSequence()
             .fold(0) { acc, i ->
                 if (set.contains(acc)) return acc
                 set.add(acc)

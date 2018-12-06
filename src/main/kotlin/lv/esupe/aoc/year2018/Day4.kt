@@ -1,28 +1,20 @@
 package lv.esupe.aoc.year2018
 
 import lv.esupe.aoc.Puzzle
-import lv.esupe.aoc.utils.benchmark
-import java.text.SimpleDateFormat
-import java.util.*
 
 
-fun main(args: Array<String>) {
-    Day4Puzzle1().calculateAndPrint()
-    Day4Puzzle2().calculateAndPrint()
-}
+fun main(args: Array<String>) = Day4().solve()
 
-class Day4Puzzle1 : Puzzle<Int>(2018, 4, 1) {
-    override fun calculate(): Int =
-        input.toSleepMap()
-            .maxBy { it.value.sum() }
+class Day4 : Puzzle<Int, Int>(2018, 4) {
+    override val input = rawInput.toSleepMap()
+
+    override fun solvePartOne(): Int =
+        input.maxBy { it.value.sum() }
             ?.let { it.key.toInt() * it.value.indexOf(it.value.max()!!) }
             ?: throw Exception("Grinch stole Christmas")
-}
 
-class Day4Puzzle2 : Puzzle<Int>(2018, 4, 2) {
-    override fun calculate(): Int =
-        input.toSleepMap()
-            .maxBy { it.value.max()!! }
+    override fun solvePartTwo(): Int =
+        input.maxBy { it.value.max()!! }
             ?.let { it.key.toInt() * it.value.indexOf(it.value.max()!!) }
             ?: throw Exception("Grinch stole Christmas")
 }

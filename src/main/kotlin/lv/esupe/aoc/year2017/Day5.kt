@@ -5,23 +5,16 @@ import lv.esupe.aoc.utils.asString
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 
-fun main(args: Array<String>) {
-    Day5Puzzle1().calculateAndPrint()
-    Day5Puzzle2().calculateAndPrint()
-}
+fun main(args: Array<String>) = Day5().solve()
 
-class Day5Puzzle1 : Puzzle<Int>(2017, 5, 1) {
-    override fun calculate(): Int =
-        input.map { it.toInt() }
-            .toMutableList()
-            .getSteps { it + 1 }
-}
+class Day5 : Puzzle<Int, Int>(2017, 5) {
+    override val input = rawInput.map { it.toInt() }.toMutableList()
 
-class Day5Puzzle2 : Puzzle<Int>(2017, 5, 2) {
-    override fun calculate(): Int =
-        input.map { it.toInt() }
-            .toMutableList()
-            .getSteps { if (it >= 3) it - 1 else it + 1 }
+    override fun solvePartOne(): Int =
+        input.getSteps { it + 1 }
+
+    override fun solvePartTwo(): Int =
+        input.getSteps { if (it >= 3) it - 1 else it + 1 }
 }
 
 private fun MutableList<Int>.getSteps(transformInstruction: (Int) -> Int): Int {
