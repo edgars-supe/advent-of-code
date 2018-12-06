@@ -3,6 +3,7 @@ package lv.esupe.aoc.year2018
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.utils.countOf
 import lv.esupe.aoc.utils.forEachIndexed
+import kotlin.math.absoluteValue
 
 
 fun main(args: Array<String>) {
@@ -17,27 +18,22 @@ class Day6 : Puzzle<Int, Int>(2018, 6) {
 
     override fun solvePartOne(): Int {
         val grid = Array(size) { Array<Point?>(size) { null } }
+        val edges = mutableSetOf<Point>()
         grid.forEachIndexed { i, j, _ ->
-            grid[i][j] = input.nearestTo(Point(i, j))
-        }
-        val edges = mutableSetOf<Point>().apply {
-            grid.forEachIndexed { i, j, point ->
-                if (point != null)
-                    if (i == 0 || j == 0 || i == size - 1 || j == size - 1) add(point)
+            val point = input.nearestTo(Point(i, j))
+            if (point != null) {
+                if (i == 0 || j == 0 || i == size - 1 || j == size - 1) edges.add(point)
             }
+            if (point !in edges) grid[i][j] = point
         }
 
-        return grid.map { row ->
-            row.groupBy { it }
-                .filterKeys { it != null }
-                .filterKeys { it !in edges }
-                .mapValues { it.value.filterNotNull().size }
-        }.fold(mutableMapOf<Point, Int>()) { acc, map ->
-            map.forEach {
-                acc.merge(it.key!!, it.value) { i, j -> i + j }
+        val map = mutableMapOf<Point, Int>()
+        grid.forEachIndexed { i, j, point ->
+            point?.let {
+                map[point] = map.getOrDefault(point, 0) + 1
             }
-            acc
-        }.values.max()!!
+        }
+        return map.values.max()!!
     }
 
     override fun solvePartTwo(): Int {
@@ -68,8 +64,8 @@ data class Point(
     val y: Int
 ) {
     fun distanceTo(point: Point): Int {
-        val dx = maxOf(x, point.x) - minOf(x, point.x)
-        val dy = maxOf(y, point.y) - minOf(y, point.y)
+        val dx = (x - point.x).absoluteValue
+        val dy = (y - point.y).absoluteValue
         return dx + dy
     }
 }
