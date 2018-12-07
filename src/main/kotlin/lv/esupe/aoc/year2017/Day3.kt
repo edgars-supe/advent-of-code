@@ -1,10 +1,11 @@
 package lv.esupe.aoc.year2017
 
 import lv.esupe.aoc.Puzzle
+import lv.esupe.aoc.solve
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 
-fun main(args: Array<String>) = Day3().solve()
+fun main(args: Array<String>) = solve { Day3() }
 
 class Day3 : Puzzle<Int, Int>(2017, 3) {
     override val input = rawInput.first().toInt()

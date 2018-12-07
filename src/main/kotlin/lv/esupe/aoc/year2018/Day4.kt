@@ -1,9 +1,10 @@
 package lv.esupe.aoc.year2018
 
 import lv.esupe.aoc.Puzzle
+import lv.esupe.aoc.solve
 
 
-fun main(args: Array<String>) = Day4().solve()
+fun main(args: Array<String>) = solve { Day4() }
 
 class Day4 : Puzzle<Int, Int>(2018, 4) {
     override val input = rawInput.toSleepMap()

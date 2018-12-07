@@ -1,11 +1,12 @@
 package lv.esupe.aoc.year2018
 
 import lv.esupe.aoc.Puzzle
+import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.asString
 import lv.esupe.aoc.utils.forAllPairs
 
 
-fun main(args: Array<String>) = Day2().solve()
+fun main(args: Array<String>) = solve { Day2() }
 
 class Day2 : Puzzle<Int, String>(2018, 2) {
     override val input = rawInput

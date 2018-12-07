@@ -1,16 +1,16 @@
 package lv.esupe.aoc.year2018
 
 import lv.esupe.aoc.Puzzle
+import lv.esupe.aoc.solve
 
 
-fun main(args: Array<String>) = Day3().solve()
+fun main(args: Array<String>) = solve { Day3() }
 
 class Day3 : Puzzle<Int, String>(2018, 3) {
     override val input = rawInput.map { it.toClaim() }
     val sheet = createSheet().apply { input.forEach { plotClaim(it) } }
 
     override fun solvePartOne(): Int = sheet.sumBy { it.count { cell -> cell > 1 } }
-
 
     override fun solvePartTwo(): String = input.first { sheet.hasNoOverlap(it) }.id
 }
