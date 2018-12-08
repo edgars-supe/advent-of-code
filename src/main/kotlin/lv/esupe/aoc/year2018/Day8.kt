@@ -14,7 +14,7 @@ class Day8 : Puzzle<Int, Int>(2018, 8) {
         createNodes(null, input)
     }
 
-    override fun solvePartOne(): Int = nodes.map { it.metadata.sum() }.sum()
+    override fun solvePartOne(): Int = nodes.sumBy { it.metadata.sum() }
 
     override fun solvePartTwo(): Int = nodes.first().value()
 
@@ -24,7 +24,7 @@ class Day8 : Puzzle<Int, Int>(2018, 8) {
      *
      * @return Offset of first metadata entry for parent Node
      */
-    fun createNodes(parent: Node?, input: List<Int>): Int {
+    private fun createNodes(parent: Node?, input: List<Int>): Int {
         val node = Node()
         val childCount = input[0]
         val metadataCount = input[1]
@@ -46,6 +46,6 @@ class Day8 : Puzzle<Int, Int>(2018, 8) {
 
         fun value(): Int =
             if (children.isEmpty()) metadata.sum()
-            else metadata.mapNotNull { child -> children.getOrNull(child - 1)?.value() }.sum()
+            else metadata.sumBy { child -> children.getOrNull(child - 1)?.value() ?: 0 }
     }
 }
