@@ -12,33 +12,36 @@ abstract class Puzzle<T, U>(year: Int, day: Int) {
     abstract fun solvePartOne(): T
 
     abstract fun solvePartTwo(): U
-
-    fun solve(initTime: Long) {
-        solvePart(1, initTime) { solvePartOne() }
-        solvePart(2, initTime) { solvePartTwo() }
-    }
-
-    private fun <A> solvePart(part: Int, initTime: Long, block: () -> A) {
-        val result = block()
-        var time = 0L
-        repeat(5) { time += measureNanoTime{ block() } }
-        val timeAvgNs = time / 5
-        val timeAvgMs = time / 5 / 1000000f
-        val initTimeMs = initTime / 1000000f
-        println(String.format(
-            "${identifier}p$part: $result, took %.3fms (${timeAvgNs}ns), incl. init: %.3f (${initTime}ns)",
-            timeAvgMs,
-            timeAvgMs + initTimeMs
-        ))
-    }
 }
 
 fun solve(block: () -> Puzzle<*, *>) {
     val puzzle = block()
-    var time = 0L
-    repeat(5) { time += measureNanoTime{ block() } }
-    val timeAvgNs = time / 5
-    val timeAvgMs = time / 5 / 1000000f
-    println(String.format("${puzzle.identifier}init: %.3fms (${timeAvgNs}ns)", timeAvgMs))
-    puzzle.solve(timeAvgNs)
+    val partOneResult = puzzle.solvePartOne()
+    val partTwoResult = puzzle.solvePartTwo()
+    var initTime = 0L
+    var partOneTime = 0L
+    var partTwoTime = 0L
+    repeat(5) {
+        lateinit var p: Puzzle<*, *>
+        initTime += measureNanoTime{ p = block() }
+        partOneTime += measureNanoTime { p.solvePartOne() }
+        partTwoTime += measureNanoTime { p.solvePartTwo() }
+    }
+    initTime /= 5
+    partOneTime /= 5
+    partTwoTime /= 5
+    println(String.format("${puzzle.identifier}init: %.3fms (${initTime}ns)", initTime.toMillis()))
+    printPartResult(puzzle, 1, partOneResult, partOneTime, initTime)
+    printPartResult(puzzle, 2, partTwoResult, partTwoTime, initTime)
 }
+
+private fun printPartResult(puzzle: Puzzle<*, *>, part: Int, result: Any?, time: Long, initTime: Long) {
+    println(String.format(
+        "${puzzle.identifier}p$part: $result, took %.3fms (${time}ns), incl. init: %.3f (${initTime}ns)",
+        time.toMillis(),
+        time.toMillis() + initTime.toMillis()
+    ))
+}
+
+
+private fun Long.toMillis() = this / 1000000f
