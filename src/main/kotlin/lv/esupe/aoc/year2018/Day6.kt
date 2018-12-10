@@ -1,6 +1,7 @@
 package lv.esupe.aoc.year2018
 
 import lv.esupe.aoc.Puzzle
+import lv.esupe.aoc.model.Point
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.countOf
 import lv.esupe.aoc.utils.over
@@ -55,14 +56,3 @@ private fun List<Point>.nearestTo(x: Int, y: Int) =
             min?.let { list.indexOf(it) }
                 ?.let { get(it) }
         }
-
-data class Point(
-    val x: Int,
-    val y: Int
-) {
-    fun distanceTo(x: Int, y: Int): Int {
-        val dx = (x - this.x).absoluteValue
-        val dy = (y - this.y).absoluteValue
-        return dx + dy
-    }
-}
