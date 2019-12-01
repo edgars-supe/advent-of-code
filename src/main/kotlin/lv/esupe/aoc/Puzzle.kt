@@ -1,6 +1,7 @@
 package lv.esupe.aoc
 
-import lv.esupe.aoc.utils.getInput
+import java.nio.file.Files
+import java.nio.file.Paths
 import kotlin.system.measureNanoTime
 
 
@@ -12,6 +13,12 @@ abstract class Puzzle<T, U>(year: Int, day: Int) {
     abstract fun solvePartOne(): T
 
     abstract fun solvePartTwo(): U
+
+    private fun getInput(year: Int, day: Int): List<String> =
+        Puzzle::class.java.classLoader.getResource("input/year$year/day$day.in")
+            .toURI()
+            .let { Paths.get(it) }
+            .let { Files.readAllLines(it) }
 }
 
 fun solve(block: () -> Puzzle<*, *>) {
@@ -23,7 +30,7 @@ fun solve(block: () -> Puzzle<*, *>) {
     var partTwoTime = 0L
     repeat(5) {
         lateinit var p: Puzzle<*, *>
-        initTime += measureNanoTime{ p = block() }
+        initTime += measureNanoTime { p = block() }
         partOneTime += measureNanoTime { p.solvePartOne() }
         partTwoTime += measureNanoTime { p.solvePartTwo() }
     }

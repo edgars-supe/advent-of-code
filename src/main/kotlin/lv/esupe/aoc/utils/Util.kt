@@ -1,25 +1,5 @@
 package lv.esupe.aoc.utils
 
-import lv.esupe.aoc.Puzzle
-import java.nio.file.Files
-import java.nio.file.Paths
-import kotlin.system.measureNanoTime
-import kotlin.system.measureTimeMillis
-
-
-fun getInput(year: Int, day: Int): List<String> =
-    Puzzle::class.java.classLoader.getResource("input/year$year/day$day.in")
-        .toURI()
-        .let { Paths.get(it) }
-        .let { Files.readAllLines(it) }
-
-fun Char.toIntValue(): Int = toInt() - 48
-
-fun Char.toAlphabetIndex(): Int = toLowerCase() - 'a'
-
-fun List<Char>.asString(): String = joinToString(separator = "")
-
-fun CharArray.asString(): String = String(this)
 
 inline fun String.charByChar(other: String, crossinline block: (Char?, Char?) -> Unit) {
     val max = maxOf(length, other.length)
