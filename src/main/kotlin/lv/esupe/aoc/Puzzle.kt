@@ -37,7 +37,7 @@ fun solve(block: () -> Puzzle<*, *>) {
 
 private fun printPartResult(puzzle: Puzzle<*, *>, part: Int, result: Any?, time: Long, initTime: Long) {
     println(String.format(
-        "${puzzle.identifier}p$part: $result, took %.3fms (${time}ns), incl. init: %.3f (${initTime}ns)",
+        "${puzzle.identifier}p$part: $result, took %.3fms (${time}ns), incl. init: %.3fms (${initTime}ns)",
         time.toMillis(),
         time.toMillis() + initTime.toMillis()
     ))

@@ -20,7 +20,7 @@ class Day6 : Puzzle<Int, Int>(2017, 6) {
         val bankSet = mutableSetOf<List<Int>>()
         var banks = this
         while (bankSet.add(banks)) {
-            var max = banks.max()!!
+            val max = banks.max()!!
             var idx = banks.indexOfFirst { it == max }
             banks = banks.toMutableList()
                 .apply {
@@ -41,7 +41,7 @@ class Day6 : Puzzle<Int, Int>(2017, 6) {
         var banks = this
         while (!bankSet.contains(banks)) {
             bankSet[banks] = cycles
-            var max = banks.max()!!
+            val max = banks.max()!!
             var idx = banks.indexOfFirst { it == max }
             banks = banks.toMutableList()
                 .apply {
