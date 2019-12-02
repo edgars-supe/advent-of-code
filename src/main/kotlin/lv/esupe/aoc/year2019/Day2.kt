@@ -4,7 +4,7 @@ import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.over
 
-fun main() = solve { Day2() }
+fun main(args: Array<String>) = solve { Day2() }
 
 class Day2 : Puzzle<Int, Int>(2019, 2) {
     companion object {
@@ -25,13 +25,12 @@ class Day2 : Puzzle<Int, Int>(2019, 2) {
         return 0
     }
 
-    private fun runProgram(noun: Int, verb: Int): Int {
-        val program = input.toMutableList().apply {
+    private fun runProgram(noun: Int, verb: Int): Int = input.toMutableList()
+        .apply {
             set(1, noun)
             set(2, verb)
         }
-        return program.run(0)[0]
-    }
+        .run(0)[0]
 
     private tailrec fun MutableList<Int>.run(opcodeIdx: Int): List<Int> {
         val opcode = get(opcodeIdx)
