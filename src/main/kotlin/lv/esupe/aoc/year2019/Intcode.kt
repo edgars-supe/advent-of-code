@@ -4,15 +4,6 @@ import kotlin.math.pow
 
 class Intcode(private val program: List<Int>, val input: Int = 0) {
     companion object {
-        private const val OPCODE_ADD = 1
-        private const val OPCODE_MULTIPLY = 2
-        private const val OPCODE_INPUT = 3
-        private const val OPCODE_OUTPUT = 4
-        private const val OPCODE_JUMP_IF_TRUE = 5
-        private const val OPCODE_JUMP_IF_FALSE = 6
-        private const val OPCODE_LESS_THAN = 7
-        private const val OPCODE_EQUALS = 8
-        private const val OPCODE_HALT = 99
         private const val MODE_PARAMETER = 0
         private const val MODE_IMMEDIATE = 1
     }
@@ -29,42 +20,43 @@ class Intcode(private val program: List<Int>, val input: Int = 0) {
 
     private tailrec fun MutableList<Int>.run(opcodeIdx: Int): List<Int> {
         val opcode = get(opcodeIdx)
-        if (opcode.isHalt()) return this
+        if (Op.Halt.isOp(opcode)) return this
 
         val jump = when {
-            opcode.isAdd() -> {
+            Op.Add.isOp(opcode) -> {
                 val result = operandA(opcode, opcodeIdx) + operandB(opcode, opcodeIdx)
-                val resultIdx = resultIdx(opcodeIdx)
-                set(resultIdx, result)
+                set(resultIdx(opcodeIdx), result)
                 4
             }
-            opcode.isMultiply() -> (operandA(opcode, opcodeIdx) * operandB(opcode, opcodeIdx)).let { set(resultIdx(opcodeIdx), it) }.let { 4 }
-            opcode.isInput() -> set(get(opcodeIdx + 1), input).let { 2 }
-            opcode.isOutput() -> get(get(opcodeIdx + 1)).let { set(0, it) }.let { 2 }
-            opcode.isJumpIfTrue() -> {
+            Op.Multiply.isOp(opcode) -> {
+                val result = operandA(opcode, opcodeIdx) * operandB(opcode, opcodeIdx)
+                set(resultIdx(opcodeIdx), result)
+                4
+            }
+            Op.Input.isOp(opcode) -> set(get(opcodeIdx + 1), input).let { 2 }
+            Op.Output.isOp(opcode) -> set(0, operandA(opcode, opcodeIdx)).let { 2 }
+            Op.JumpIfTrue.isOp(opcode) -> {
                 if (operandA(opcode, opcodeIdx) != 0) {
-                    val jumpTo = operandB(opcode, opcodeIdx)
-                    //set(opcodeIdx, operandB(opcode, opcodeIdx))
-                    jumpTo - opcodeIdx
+                    operandB(opcode, opcodeIdx) - opcodeIdx
                 } else {
-                    4
+                    3
                 }
             }
-            opcode.isJumpIfFalse() -> {
+            Op.JumpIfFalse.isOp(opcode) -> {
                 if (operandA(opcode, opcodeIdx) == 0) {
                     operandB(opcode, opcodeIdx) - opcodeIdx
                 } else {
-                    4
+                    3
                 }
             }
-            opcode.isLessThan() -> {
+            Op.LessThan.isOp(opcode) -> {
                 val resultIdx = resultIdx(opcodeIdx)
                 if (operandA(opcode, opcodeIdx) < operandB(opcode, opcodeIdx)) set(resultIdx, 1)
                 else set(resultIdx, 0)
 
                 if (resultIdx == opcodeIdx) get(opcodeIdx) else 4
             }
-            opcode.isEquals() -> {
+            Op.Equals.isOp(opcode) -> {
                 val resultIdx = resultIdx(opcodeIdx)
                 if (operandA(opcode, opcodeIdx) == operandB(opcode, opcodeIdx)) set(resultIdx, 1)
                 else set(resultIdx, 0)
@@ -78,24 +70,6 @@ class Intcode(private val program: List<Int>, val input: Int = 0) {
 
     private fun Int.getParameterMode(param: Int) =
         (this / 10.0.pow(param + 2.0).toInt()) and MODE_IMMEDIATE
-
-    private fun Int.isAdd() = this.rem(100) == OPCODE_ADD
-
-    private fun Int.isMultiply() = this.rem(100) == OPCODE_MULTIPLY
-
-    private fun Int.isInput() = this.rem(100) == OPCODE_INPUT
-
-    private fun Int.isOutput() = this.rem(100) == OPCODE_OUTPUT
-
-    private fun Int.isJumpIfTrue() = this.rem(100) == OPCODE_JUMP_IF_TRUE
-
-    private fun Int.isJumpIfFalse() = this.rem(100) == OPCODE_JUMP_IF_FALSE
-
-    private fun Int.isLessThan() = this.rem(100) == OPCODE_LESS_THAN
-
-    private fun Int.isEquals() = this.rem(100) == OPCODE_EQUALS
-
-    private fun Int.isHalt() = this.rem(100) == OPCODE_HALT
 
     private fun List<Int>.operandA(opcode: Int, opcodeIdx: Int): Int =
         when (opcode.getParameterMode(0)) {
@@ -112,4 +86,19 @@ class Intcode(private val program: List<Int>, val input: Int = 0) {
         }
 
     private fun List<Int>.resultIdx(opcodeIdx: Int) = get(opcodeIdx + 3)
+
+    private enum class Op(val opcode: Int) {
+        Add(1),
+        Multiply(2),
+        Input(3),
+        Output(4),
+        JumpIfTrue(5),
+        JumpIfFalse(6),
+        LessThan(7),
+        Equals(8),
+        Halt(99)
+        ;
+
+        fun isOp(code: Int) = code.rem(100) == opcode
+    }
 }
