@@ -1,8 +1,6 @@
 package lv.esupe.aoc.year2019
 
 import lv.esupe.aoc.Puzzle
-import lv.esupe.aoc.model.Direction
-import lv.esupe.aoc.model.Point
 import lv.esupe.aoc.solve
 
 fun main(args: Array<String>) = solve { Day4() }
