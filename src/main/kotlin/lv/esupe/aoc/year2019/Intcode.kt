@@ -16,51 +16,50 @@ class Intcode(private val program: List<Int>, val input: Int = 0) {
             set(1, noun)
             set(2, verb)
         }
-        .run(0)[0]
+        .run(0)
 
-    private tailrec fun MutableList<Int>.run(opcodeIdx: Int): List<Int> {
+    private tailrec fun MutableList<Int>.run(opcodeIdx: Int): Int {
         val opcode = get(opcodeIdx)
-        if (Op.Halt.isOp(opcode)) return this
+        if (Op.Halt.isOp(opcode)) return first()
 
         val jump = when {
             Op.Add.isOp(opcode) -> {
-                val result = operandA(opcode, opcodeIdx) + operandB(opcode, opcodeIdx)
+                val result = param1(opcode, opcodeIdx) + param2(opcode, opcodeIdx)
                 set(resultIdx(opcodeIdx), result)
                 4
             }
             Op.Multiply.isOp(opcode) -> {
-                val result = operandA(opcode, opcodeIdx) * operandB(opcode, opcodeIdx)
+                val result = param1(opcode, opcodeIdx) * param2(opcode, opcodeIdx)
                 set(resultIdx(opcodeIdx), result)
                 4
             }
-            Op.Input.isOp(opcode) -> set(get(opcodeIdx + 1), input).let { 2 }
-            Op.Output.isOp(opcode) -> set(0, operandA(opcode, opcodeIdx)).let { 2 }
+            Op.Input.isOp(opcode) -> {
+                set(get(opcodeIdx + 1), input)
+                2
+            }
+            Op.Output.isOp(opcode) -> {
+                set(0, param1(opcode, opcodeIdx))
+                2
+            }
             Op.JumpIfTrue.isOp(opcode) -> {
-                if (operandA(opcode, opcodeIdx) != 0) {
-                    operandB(opcode, opcodeIdx) - opcodeIdx
-                } else {
-                    3
-                }
+                if (param1(opcode, opcodeIdx) != 0) param2(opcode, opcodeIdx) - opcodeIdx
+                else 3
             }
             Op.JumpIfFalse.isOp(opcode) -> {
-                if (operandA(opcode, opcodeIdx) == 0) {
-                    operandB(opcode, opcodeIdx) - opcodeIdx
-                } else {
-                    3
-                }
+                if (param1(opcode, opcodeIdx) == 0) param2(opcode, opcodeIdx) - opcodeIdx
+                else 3
             }
             Op.LessThan.isOp(opcode) -> {
                 val resultIdx = resultIdx(opcodeIdx)
-                if (operandA(opcode, opcodeIdx) < operandB(opcode, opcodeIdx)) set(resultIdx, 1)
+                if (param1(opcode, opcodeIdx) < param2(opcode, opcodeIdx)) set(resultIdx, 1)
                 else set(resultIdx, 0)
-
-                if (resultIdx == opcodeIdx) get(opcodeIdx) else 4
+                4
             }
             Op.Equals.isOp(opcode) -> {
                 val resultIdx = resultIdx(opcodeIdx)
-                if (operandA(opcode, opcodeIdx) == operandB(opcode, opcodeIdx)) set(resultIdx, 1)
+                if (param1(opcode, opcodeIdx) == param2(opcode, opcodeIdx)) set(resultIdx, 1)
                 else set(resultIdx, 0)
-                if (resultIdx == opcodeIdx) get(opcodeIdx) else 4
+                4
             }
             else -> throw Exception("Whoops, OP_$opcode@$opcodeIdx")
         }
@@ -71,14 +70,14 @@ class Intcode(private val program: List<Int>, val input: Int = 0) {
     private fun Int.getParameterMode(param: Int) =
         (this / 10.0.pow(param + 2.0).toInt()) and MODE_IMMEDIATE
 
-    private fun List<Int>.operandA(opcode: Int, opcodeIdx: Int): Int =
+    private fun List<Int>.param1(opcode: Int, opcodeIdx: Int): Int =
         when (opcode.getParameterMode(0)) {
             MODE_PARAMETER -> get(get(opcodeIdx + 1))
             MODE_IMMEDIATE -> get(opcodeIdx + 1)
             else -> error("Incorrect parameter mode, ${opcode.getParameterMode(1)}")
         }
 
-    private fun List<Int>.operandB(opcode: Int, opcodeIdx: Int): Int =
+    private fun List<Int>.param2(opcode: Int, opcodeIdx: Int): Int =
         when (opcode.getParameterMode(1)) {
             MODE_PARAMETER -> get(get(opcodeIdx + 2))
             MODE_IMMEDIATE -> get(opcodeIdx + 2)
