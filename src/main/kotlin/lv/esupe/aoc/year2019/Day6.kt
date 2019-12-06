@@ -6,8 +6,10 @@ import lv.esupe.aoc.solve
 fun main(args: Array<String>) = solve { Day6() }
 
 class Day6 : Puzzle<Int, Int>(2019, 6) {
-
-    override val input = rawInput.map { it.split(")") }.associate { it.last() to it.first() }
+    override val input = rawInput.associate { data ->
+        val splitAt = data.indexOf(')')
+        data.drop(splitAt + 1) to data.take(splitAt)
+    }
 
     override fun solvePartOne(): Int = input.map { (k, _) -> k.countOrbits() }.sum()
 
@@ -25,8 +27,12 @@ class Day6 : Puzzle<Int, Int>(2019, 6) {
     }
 
     private fun pathToCom(from: String): List<String> {
-        val next = input[from]
-        return if (next == null) emptyList()
-        else listOf(next) + pathToCom(next)
+        return mutableListOf<String>().also { it.pathToCom(from) }
+    }
+
+    private tailrec fun MutableList<String>.pathToCom(from: String) {
+        val next = input[from] ?: return
+        add(next)
+        pathToCom(next)
     }
 }
