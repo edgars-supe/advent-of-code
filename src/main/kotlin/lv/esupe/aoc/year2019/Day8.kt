@@ -27,6 +27,5 @@ class Day8 : Puzzle<Int, String>(2019, 8) {
         .map { if (it == '1') '@' else ' ' }
         .asString()
         .chunked(25)
-        .fold(StringBuilder("\n")) { sb, row -> sb.appendln(row) }
-        .toString()
+        .joinToString(prefix = "\n", separator = "\n")
 }
