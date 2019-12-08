@@ -1,12 +1,24 @@
 package lv.esupe.aoc
 
+import java.nio.file.Files
+import java.nio.file.Paths
 import kotlin.system.measureNanoTime
+
+object Solver {
+    var suffix: String = ""
+}
 
 fun <T : Any, R : Any> solve(block: () -> Puzzle<T, R>) {
     printResult(block)
     println()
     benchmark(block)
 }
+
+fun getInput(year: Int, day: Int): List<String> =
+    Puzzle::class.java.classLoader.getResource("input/year$year/day$day${Solver.suffix}.in")
+        .toURI()
+        .let { Paths.get(it) }
+        .let { Files.readAllLines(it) }
 
 private fun <T : Any, R : Any> printResult(block: () -> Puzzle<T, R>) {
     val puzzle = block()
