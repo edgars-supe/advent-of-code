@@ -2,11 +2,16 @@ package lv.esupe.aoc.year2019
 
 import kotlin.math.pow
 
-class Intcode(private val program: List<Int>, val input: Int = 0) {
+class Intcode(program: List<Int>, val input: MutableList<Int> = mutableListOf()) {
     companion object {
         private const val MODE_PARAMETER = 0
         private const val MODE_IMMEDIATE = 1
     }
+
+    constructor(program: List<Int>, input: Int) : this(program, mutableListOf(input))
+
+    private val program = program.toMutableList()
+    private var inputIdx = 0
 
     fun run(
         noun: Int = program.getOrElse(1) { 0 },
@@ -34,7 +39,7 @@ class Intcode(private val program: List<Int>, val input: Int = 0) {
                 4
             }
             Op.Input.isOp(opcode) -> {
-                set(get(opcodeIdx + 1), input)
+                set(get(opcodeIdx + 1), input[inputIdx++])
                 2
             }
             Op.Output.isOp(opcode) -> {

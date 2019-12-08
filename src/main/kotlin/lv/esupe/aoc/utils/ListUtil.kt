@@ -34,3 +34,17 @@ fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = runBlocking(Dispatch
 fun <A, B> Iterable<A>.pmapIndexed(f: suspend (Int, A) -> B): List<B> = runBlocking(Dispatchers.Default) {
     mapIndexed { idx, item -> async { f(idx, item) } }.map { it.await() }
 }
+
+fun <T> permute(list: List<T>): List<List<T>> {
+    if (list.size == 1) return listOf(list)
+
+    val perms = mutableListOf<List<T>>()
+    val sub = list[0]
+    for (perm in permute(list.drop(1)))
+        for (i in 0..perm.size) {
+            val newPerm = perm.toMutableList()
+            newPerm.add(i, sub)
+            perms.add(newPerm)
+        }
+    return perms
+}
