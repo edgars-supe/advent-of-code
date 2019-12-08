@@ -3,6 +3,7 @@ package lv.esupe.aoc.year2019
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.asString
+import lv.esupe.aoc.utils.count
 
 fun main(args: Array<String>) = solve { Day8() }
 
@@ -11,8 +12,8 @@ class Day8 : Puzzle<Int, String>(2019, 8) {
     override val input = rawInput[0].chunked(25 * 6)
 
     override fun solvePartOne(): Int = input
-        .minBy { layer -> layer.count { it == '0' } }
-        ?.let { layer -> layer.count { it == '1' } * layer.count { it == '2' } }
+        .minBy { it.count('0') }
+        ?.let { it.count('1') * it.count('2') }
         ?: -1
 
     override fun solvePartTwo(): String = input
