@@ -21,3 +21,8 @@ fun lcm(a: Long, b: Long, vararg numbers: Long): Long = when {
     numbers.isEmpty() -> abs(a * b) / gcd(a, b)
     else -> lcm(lcm(a, b), numbers.first(), *numbers.drop(1).toLongArray())
 }
+
+infix fun Int.modulo(mod: Int): Int {
+    val r = rem(mod)
+    return if (r < 0) r + mod else r
+}
