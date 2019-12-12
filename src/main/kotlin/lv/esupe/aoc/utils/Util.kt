@@ -16,3 +16,11 @@ inline fun IntRange.over(other: IntRange, action: (Int, Int) -> Unit) {
         }
     }
 }
+
+inline fun LongRange.over(other: LongRange, action: (Long, Long) -> Unit) {
+    for (i in this) {
+        for (j in other) {
+            action(i, j)
+        }
+    }
+}
