@@ -3,10 +3,10 @@ package lv.esupe.aoc.model
 import lv.esupe.aoc.utils.modulo
 
 enum class Direction(val point: Point) {
-    North(Point(1, 0)),
-    East(Point(0, 1)),
-    South(Point(-1, 0)),
-    West(Point(0, -1));
+    North(Point(0, 1)),
+    East(Point(1, 0)),
+    South(Point(0, -1)),
+    West(Point(-1, 0));
 
     val left: Direction get() = getByOffset(-1)
     val right: Direction get() = getByOffset(1)
