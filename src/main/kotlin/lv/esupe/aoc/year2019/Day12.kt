@@ -46,9 +46,8 @@ class Day12 : Puzzle<Int, Long>(2019, 12) {
             .applyVelocity()
     }
 
-    private inline fun List<Moon>.check(axis: Point3.() -> Int): Boolean {
-        return indices.all { idx -> matches(idx, axis) }
-    }
+    private inline fun List<Moon>.check(axis: Point3.() -> Int): Boolean =
+        indices.all { idx -> matches(idx, axis) }
 
     private inline fun List<Moon>.matches(index: Int, axis: Point3.() -> Int): Boolean =
         this[index].position.axis() == input[index].position.axis() &&
