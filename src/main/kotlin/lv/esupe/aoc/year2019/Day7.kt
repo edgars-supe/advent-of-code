@@ -19,23 +19,19 @@ class Day7 : Puzzle<Long, Long>(2019, 7) {
         permute(listOf(0L, 1L, 2L, 3L, 4L))
             .map { perm ->
                 (0..4).fold(0L) { inp, i ->
-                    Intcode(input).run {
-                        input(perm[i], inp)
-                        execute()
-                        output.last()
-                    }
+                    Intcode(input).execute(inputs = listOf(perm[i], inp)).last()
                 }
             }
             .max()!!
     }
 
-    override fun solvePartTwo(): Long = runBlocking {
+    override fun solvePartTwo(): Long = runBlocking(Dispatchers.Default) {
         permute(listOf(5L, 6L, 7L, 8L, 9L))
             .map { perm -> calculateOutput(perm) }
             .max()!!
     }
 
-    private suspend fun calculateOutput(perm: List<Long>): Long = coroutineScope {
+    private suspend fun calculateOutput(perm: List<Long>): Long {
         val a = Intcode(input).also { it.input(perm[0], 0) }
         val b = Intcode(input, a.output).also { it.input(perm[1]) }
         val c = Intcode(input, b.output).also { it.input(perm[2]) }
@@ -48,6 +44,6 @@ class Day7 : Puzzle<Long, Long>(2019, 7) {
             launch { d.execute() }
             launch { e.execute() }
         }
-        e.output.last()
+        return e.output.last()
     }
 }

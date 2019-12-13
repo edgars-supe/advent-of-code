@@ -1,7 +1,7 @@
 package lv.esupe.aoc.year2019
 
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.last
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.year2019.model.Intcode
@@ -19,10 +19,6 @@ class Day9 : Puzzle<Long, Long>(2019, 9) {
     override fun solvePartTwo(): Long = runProgram(2)
 
     private fun runProgram(value: Long): Long = runBlocking {
-        Intcode(input).run {
-            input(value)
-            execute()
-            output.last()
-        }
+        Intcode(input).execute(input = value).last()
     }
 }

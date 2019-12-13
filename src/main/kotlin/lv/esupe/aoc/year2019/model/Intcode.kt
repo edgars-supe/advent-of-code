@@ -2,12 +2,11 @@ package lv.esupe.aoc.year2019.model
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.toList
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import lv.esupe.aoc.utils.toIntValue
-import lv.esupe.aoc.year2019.model.Intcode.Param.First
-import lv.esupe.aoc.year2019.model.Intcode.Param.Second
-import lv.esupe.aoc.year2019.model.Intcode.Param.Third
+import lv.esupe.aoc.year2019.model.Intcode.Param.*
 
 private typealias Memory = MutableMap<Long, Long>
 
@@ -30,6 +29,15 @@ class Intcode(
     suspend fun input(vararg values: Long): Intcode {
         values.forEach { input.send(it) }
         return this
+    }
+
+    suspend fun execute(noun: Long? = null, verb: Long? = null, input: Long): List<Long> =
+        execute(noun, verb, listOf(input))
+
+    suspend fun execute(noun: Long? = null, verb: Long? = null, inputs: List<Long>): List<Long> {
+        inputs.forEach { input.send(it) }
+        execute(noun, verb)
+        return output.toList()
     }
 
     suspend fun execute(noun: Long? = null, verb: Long? = null): Long {
