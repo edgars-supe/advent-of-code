@@ -35,30 +35,22 @@ class Day13 : Puzzle<Int, Long>(2019, 13) {
         screen[Point(-1, 0)] ?: -1L
     }
 
-    private suspend fun playGame(program: List<Long>, onInput: (suspend () -> Long)? = null) = coroutineScope {
+    private suspend fun playGame(program: List<Long>, movePaddle: (suspend () -> Long)? = null) = coroutineScope {
         val intcode = Intcode(program)
-        intcode.onInput = { onInput?.invoke()?.let { send(it) } }
+        intcode.onInput = { movePaddle?.invoke()?.let { send(it) } }
+        launch { intcode.execute() }
         launch {
             var phase = 0
             var x = 0
             var y = 0
             intcode.output.consumeEach { out ->
                 when (phase) {
-                    0 -> {
-                        x = out.toInt()
-                        phase = 1
-                    }
-                    1 -> {
-                        y = out.toInt()
-                        phase = 2
-                    }
-                    2 -> {
-                        screen[Point(x, y)] = out
-                        phase = 0
-                    }
+                    0 -> x = out.toInt()
+                    1 -> y = out.toInt()
+                    2 -> screen[Point(x, y)] = out
                 }
+                phase = (phase + 1) % 3
             }
         }
-        launch { intcode.execute() }
     }
 }
