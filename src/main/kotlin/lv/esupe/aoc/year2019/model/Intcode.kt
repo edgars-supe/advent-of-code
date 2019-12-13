@@ -2,8 +2,12 @@ package lv.esupe.aoc.year2019.model
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import lv.esupe.aoc.utils.toIntValue
-import lv.esupe.aoc.year2019.model.Intcode.Param.*
+import lv.esupe.aoc.year2019.model.Intcode.Param.First
+import lv.esupe.aoc.year2019.model.Intcode.Param.Second
+import lv.esupe.aoc.year2019.model.Intcode.Param.Third
 
 private typealias Memory = MutableMap<Long, Long>
 
@@ -14,6 +18,7 @@ class Intcode(
     val output: Channel<Long> = Channel(Channel.UNLIMITED)
 ){
 
+    var onInput: (suspend Channel<Long>.() -> Unit)? = null
     private val memory: Memory = program.withIndex()
         .associateTo(mutableMapOf()) { (idx, value) -> idx.toLong() to value }
         .withDefault { 0L }
@@ -63,10 +68,13 @@ class Intcode(
         return 4
     }
 
-    private suspend fun input(): Long {
-        val value = input.receive()
-        write(First, value)
-        return 2
+    private suspend fun input(): Long = coroutineScope {
+        launch { onInput?.invoke(input) }
+        launch {
+            val value = input.receive()
+            write(First, value)
+        }
+        2L
     }
 
     private suspend fun output(): Long {
