@@ -26,3 +26,11 @@ infix fun Int.modulo(mod: Int): Int {
     val r = rem(mod)
     return if (r < 0) r + mod else r
 }
+
+fun Int.nearestMultipleAtOrAbove(of: Int): Int {
+    return when {
+        this < of -> of
+        rem(of) == 0 -> this
+        else -> this + of - rem(of)
+    }
+}

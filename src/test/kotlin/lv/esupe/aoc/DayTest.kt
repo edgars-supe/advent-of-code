@@ -4,15 +4,15 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 
 
-abstract class DayTest {
-    abstract val puzzle: () -> Puzzle<*, *>
+abstract class DayTest<T, R> {
+    abstract val puzzle: () -> Puzzle<T, R>
 
     @AfterEach
     fun tearDown() {
         Solver.suffix = ""
     }
 
-    fun runTest(suffix: String, part1: Int, part2: Int) {
+    fun runTest(suffix: String, part1: T, part2: R) {
         Solver.suffix = suffix
         val p = puzzle()
         assertEquals(part1, p.solvePartOne(), "Part 1, incorrect result")
