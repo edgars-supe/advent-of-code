@@ -34,3 +34,11 @@ fun Int.nearestMultipleAtOrAbove(of: Int): Int {
         else -> this + of - rem(of)
     }
 }
+
+fun Long.nearestMultipleAtOrAbove(of: Long): Long {
+    return when {
+        this < of -> of
+        rem(of) == 0L -> this
+        else -> this + of - rem(of)
+    }
+}

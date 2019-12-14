@@ -4,18 +4,18 @@ import lv.esupe.aoc.DayTest
 import org.junit.jupiter.api.Test
 
 
-class Day14Test : DayTest<Int, Int>() {
+class Day14Test : DayTest<Long, Long>() {
 
     override val puzzle = { Day14() }
 
     @Test
     fun day14_1() {
-        runTest("_1", 31, 0)
+        runTest("_1", 31, 34482758620)
     }
 
     @Test
     fun day14_2() {
-        runTest("_2", 165, 0)
+        runTest("_2", 165, 6323777403)
     }
 
     @Test
