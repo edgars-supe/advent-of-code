@@ -11,7 +11,10 @@ fun <T : Any> List<T>.asInfiniteSequence(): Sequence<T> {
 }
 
 fun <T> List<T>.repeat(times: Int): List<T> {
-    return (0..times).flatMap { this }
+    val sequence = sequence { repeat(times) { yieldAll(this@repeat) } }
+    val list = ArrayList<T>(sequence.count())
+    sequence.forEach { list.add(it) }
+    return list
 }
 
 inline fun <T> List<T>.forAllPairs(block: (T, T) -> Unit) {
