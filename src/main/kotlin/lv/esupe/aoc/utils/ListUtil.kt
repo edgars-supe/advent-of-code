@@ -10,6 +10,10 @@ fun <T : Any> List<T>.asInfiniteSequence(): Sequence<T> {
     return generateSequence(get(index)) { get(++index % size) }
 }
 
+fun <T> List<T>.repeat(times: Int): List<T> {
+    return (0..times).flatMap { this }
+}
+
 inline fun <T> List<T>.forAllPairs(block: (T, T) -> Unit) {
     for (i in 0 until size) {
         for (j in (i + 1) until size) {
