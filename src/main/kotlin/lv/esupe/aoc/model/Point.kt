@@ -21,6 +21,14 @@ data class Point(
         val dy = (y - this.y).absoluteValue
         return dx + dy
     }
+
+    fun up() = move(Direction.North)
+
+    fun left() = move(Direction.West)
+
+    fun right() = move(Direction.East)
+
+    fun down() = move(Direction.South)
 }
 
 fun <T> MutableMap<Point, T>.asString(
