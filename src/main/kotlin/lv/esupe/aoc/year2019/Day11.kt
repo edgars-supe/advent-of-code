@@ -8,6 +8,7 @@ import kotlinx.coroutines.runBlocking
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.model.Direction
 import lv.esupe.aoc.model.Point
+import lv.esupe.aoc.model.asString
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.year2019.model.Intcode
 
@@ -61,18 +62,10 @@ class Day11 : Puzzle<Int, String>(2019, 11) {
         }
     }
 
-    private fun printHull(hull: MutableMap<Point, Long>): String {
-        val minX = hull.keys.minBy { it.x }!!.x
-        val maxX = hull.keys.maxBy { it.x }!!.x
-        val minY = hull.keys.minBy { it.y }!!.y
-        val maxY = hull.keys.maxBy { it.y }!!.y
-        return (maxY downTo minY)
-            .joinToString(prefix = "\n", separator = "\n") { y ->
-                (minX..maxX).joinToString("") { x -> hull.getPanel(Point(x, y)).toString() }
-            }
+    private fun printHull(hull: MutableMap<Point, Long>): String =
+        hull.asString() { x, y -> hull.getPanel(Point(x, y)).toString() }
             .replace('0', ' ')
             .replace('1', '@')
-    }
 
     private fun MutableMap<Point, Long>.getPanel(position: Point) = getOrPut(position) { BLACK }
 }

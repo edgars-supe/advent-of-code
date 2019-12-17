@@ -8,6 +8,7 @@ import kotlinx.coroutines.runBlocking
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.year2019.model.Intcode
+import lv.esupe.aoc.year2019.model.toProgram
 import java.awt.Point
 import kotlin.math.sign
 
@@ -17,7 +18,7 @@ fun main(args: Array<String>) = solve { Day13() }
 @ExperimentalCoroutinesApi
 class Day13 : Puzzle<Int, Long>(2019, 13) {
 
-    override val input = rawInput[0].split(",").map { it.toLong() }
+    override val input = rawInput[0].toProgram()
     private val screen: MutableMap<Point, Long> = mutableMapOf()
 
     override fun solvePartOne(): Int = runBlocking {

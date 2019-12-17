@@ -6,13 +6,14 @@ import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.over
 import lv.esupe.aoc.year2019.model.Intcode
+import lv.esupe.aoc.year2019.model.toProgram
 
 @ExperimentalCoroutinesApi
 fun main(args: Array<String>) = solve { Day2() }
 
 @ExperimentalCoroutinesApi
 class Day2 : Puzzle<Long, Long>(2019, 2) {
-    override val input = rawInput[0].split(",").map { it.toLong() }
+    override val input = rawInput[0].toProgram()
 
     override fun solvePartOne(): Long = runProgram(12, 2)
 

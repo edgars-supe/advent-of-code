@@ -10,6 +10,8 @@ import lv.esupe.aoc.year2019.model.Intcode.Param.*
 
 private typealias Memory = MutableMap<Long, Long>
 
+fun String.toProgram() = split(",").map { it.toLong() }
+
 @ExperimentalCoroutinesApi
 class Intcode(
     program: List<Long>,
