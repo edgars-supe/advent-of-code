@@ -2,12 +2,12 @@ package lv.esupe.aoc.year2019
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.channels.last
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.model.Point
-import lv.esupe.aoc.model.asString
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.year2019.model.Intcode
 import lv.esupe.aoc.year2019.model.toProgram
@@ -17,7 +17,14 @@ import kotlin.math.abs
 fun main(args: Array<String>) = solve { Day17() }
 
 @ExperimentalCoroutinesApi
-class Day17 : Puzzle<Int, Int>(2019, 17) {
+class Day17 : Puzzle<Int, Long>(2019, 17) {
+    companion object {
+        private const val ROUTINE = "A,B,A,C,B,C,B,A,C,B"
+        private const val A = "L,10,L,6,R,10"
+        private const val B = "R,6,R,8,R,8,L,6,R,8"
+        private const val C = "L,10,R,8,R,8,L,10"
+    }
+
     override val input = rawInput[0].toProgram()
     private val grid = mutableMapOf<Point, Char>()
 
@@ -39,8 +46,6 @@ class Day17 : Puzzle<Int, Int>(2019, 17) {
             }
         }
 
-        println(grid.asString { c -> "$c" })
-
         grid.filter { (point, char) ->
             if (char == '#') {
                 listOf(
@@ -58,6 +63,25 @@ class Day17 : Puzzle<Int, Int>(2019, 17) {
             .sum()
     }
 
-    override fun solvePartTwo(): Int = 0
+    override fun solvePartTwo(): Long = runBlocking {
+        val program = input.toMutableList().apply { set(0, 2L) }
+        val intcode = Intcode(program)
+        coroutineScope {
+            launch { intcode.execute() }
+            launch {
+                intcode.sendLine(ROUTINE)
+                intcode.sendLine(A)
+                intcode.sendLine(B)
+                intcode.sendLine(C)
+                intcode.sendLine("n")
+            }
+        }
+        intcode.output.last()
+    }
 
+    private suspend fun Intcode.sendLine(line: String) {
+        line.map { it.toInt() }
+            .forEach { input.send(it.toLong()) }
+            .also { input.send(10) }
+    }
 }
