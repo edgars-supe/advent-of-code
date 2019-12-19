@@ -1,8 +1,6 @@
 package lv.esupe.aoc.year2019
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.model.Point
@@ -17,26 +15,47 @@ fun main(args: Array<String>) = solve { Day19() }
 @ExperimentalCoroutinesApi
 class Day19 : Puzzle<Int, Int>(2019, 19) {
     override val input = rawInput[0].toProgram()
-    private val grid = mutableMapOf<Point, Long>()
 
     override fun solvePartOne(): Int = runBlocking {
+        val grid = mutableMapOf<Point, Boolean>()
         (0 until 50).over(0 until 50) { x, y ->
-            val intcode = Intcode(input)
-            coroutineScope {
-                launch { intcode.execute() }
-                launch {
-                    intcode.input.send(x.toLong())
-                    intcode.input.send(y.toLong())
-                    if (!intcode.output.isClosedForReceive) {
-                        val result = intcode.output.receive()
-                        grid[Point(x, y)] = result
-                    }
-                }
-            }
+            grid[Point(x, y)] = Point(x, y).isPulled()
         }
-        grid.count { (_, value) -> value == 1L }
+        grid.count { (_, value) -> value }
     }
 
-    override fun solvePartTwo(): Int = 0
+    override fun solvePartTwo(): Int = runBlocking {
+        var y = 700
+        while (true) {
+            val bottomLeft = findFirstValidX(y)
+            val topRight = Point(x = bottomLeft.x + 99, y = bottomLeft.y - 99)
+            if (topRight.isPulled()) {
+                return@runBlocking bottomLeft.x * 10000 + topRight.y
+            } else {
+                y++
+            }
+        }
+        -1
+    }
 
+    private suspend fun findFirstValidX(y: Int): Point {
+        var x = 0
+        while (true) {
+            val point = Point(x, y)
+            if (point.isPulled()) {
+                return point
+            }
+            else x++
+            if (x > 10000) break
+        }
+        error("Couldn't find valid x")
+    }
+
+    private suspend fun findLastValidX(from: Point): Point {
+        return if (from.right().isPulled()) findLastValidX(from.right())
+        else from
+    }
+
+    private suspend fun Point.isPulled(): Boolean =
+        Intcode(input).execute(inputs = listOf(x.toLong(), y.toLong())).last() == 1L
 }
