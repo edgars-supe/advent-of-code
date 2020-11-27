@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="2019, Day 3 Test" type="JUnit" factoryName="JUnit">
+    <module name="advent-of-code.test" />
+    <useClassPathOnly />
+    <option name="PACKAGE_NAME" value="lv.esupe.aoc.year2019" />
+    <option name="MAIN_CLASS_NAME" value="lv.esupe.aoc.year2019.Day3Test" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <option name="PARAMETERS" value="" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
