@@ -1,6 +1,5 @@
 package lv.esupe.aoc.year2019
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -12,10 +11,8 @@ import lv.esupe.aoc.year2019.model.toProgram
 import java.awt.Point
 import kotlin.math.sign
 
-@ExperimentalCoroutinesApi
-fun main(args: Array<String>) = solve { Day13() }
+fun main() = solve { Day13() }
 
-@ExperimentalCoroutinesApi
 class Day13 : Puzzle<Int, Long>(2019, 13) {
 
     override val input = rawInput[0].toProgram()

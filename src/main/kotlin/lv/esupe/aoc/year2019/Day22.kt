@@ -4,7 +4,7 @@ import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 import kotlin.math.absoluteValue
 
-fun main(args: Array<String>) = solve { Day22() }
+fun main() = solve { Day22() }
 
 class Day22 : Puzzle<Int, Int>(2019, 22) {
     override val input = rawInput.map { Technique.from(it) }

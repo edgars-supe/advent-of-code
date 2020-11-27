@@ -1,6 +1,5 @@
 package lv.esupe.aoc.year2019
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.model.Point
@@ -9,10 +8,8 @@ import lv.esupe.aoc.utils.over
 import lv.esupe.aoc.year2019.model.Intcode
 import lv.esupe.aoc.year2019.model.toProgram
 
-@ExperimentalCoroutinesApi
-fun main(args: Array<String>) = solve { Day19() }
+fun main() = solve { Day19() }
 
-@ExperimentalCoroutinesApi
 class Day19 : Puzzle<Int, Int>(2019, 19) {
     override val input = rawInput[0].toProgram()
 

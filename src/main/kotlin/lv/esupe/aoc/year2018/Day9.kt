@@ -4,7 +4,7 @@ import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 
 
-fun main(args: Array<String>) = solve { Day9() }
+fun main() = solve { Day9() }
 
 class Day9 : Puzzle<Long, Long>(2018, 9) {
     override val input = rawInput.first().split(" ")

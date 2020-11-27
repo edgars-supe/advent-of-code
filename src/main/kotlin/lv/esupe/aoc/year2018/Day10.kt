@@ -4,9 +4,8 @@ import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.model.Point
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.pmapIndexed
-import kotlin.system.measureTimeMillis
 
-fun main(args: Array<String>) = solve { Day10() }
+fun main() = solve { Day10() }
 
 class Day10 : Puzzle<String, Int>(2018, 10) {
     override val input = rawInput.mapNotNull {

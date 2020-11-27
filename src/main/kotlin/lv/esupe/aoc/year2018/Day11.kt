@@ -5,7 +5,7 @@ import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.over
 
-fun main(args: Array<String>) = solve { Day11() }
+fun main() = solve { Day11() }
 
 class Day11 : Puzzle<String, String>(2018, 11) {
     override val input = rawInput.first().toInt()

@@ -5,7 +5,7 @@ import lv.esupe.aoc.model.Direction
 import lv.esupe.aoc.model.Point
 import lv.esupe.aoc.solve
 
-fun main(args: Array<String>) = solve { Day3() }
+fun main() = solve { Day3() }
 
 class Day3 : Puzzle<Int, Int>(2019, 3) {
 

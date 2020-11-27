@@ -1,6 +1,5 @@
 package lv.esupe.aoc.year2019
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.last
 import kotlinx.coroutines.coroutineScope
@@ -13,10 +12,8 @@ import lv.esupe.aoc.year2019.model.Intcode
 import lv.esupe.aoc.year2019.model.toProgram
 import kotlin.math.abs
 
-@ExperimentalCoroutinesApi
-fun main(args: Array<String>) = solve { Day17() }
+fun main() = solve { Day17() }
 
-@ExperimentalCoroutinesApi
 class Day17 : Puzzle<Int, Long>(2019, 17) {
     companion object {
         private const val ROUTINE = "A,B,A,C,B,C,B,A,C,B"

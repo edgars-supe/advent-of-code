@@ -5,7 +5,7 @@ import lv.esupe.aoc.model.Direction
 import lv.esupe.aoc.model.Point
 import lv.esupe.aoc.solve
 
-fun main(args: Array<String>) = solve { Day13() }
+fun main() = solve { Day13() }
 
 class Day13 : Puzzle<String, Int>(2018, 13) {
     override val input = rawInput

@@ -5,10 +5,9 @@ import lv.esupe.aoc.model.Point
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.countOf
 import lv.esupe.aoc.utils.over
-import kotlin.math.absoluteValue
 
 
-fun main(args: Array<String>) = solve { Day6() }
+fun main() = solve { Day6() }
 
 class Day6 : Puzzle<Int, Int>(2018, 6) {
     override val input = rawInput

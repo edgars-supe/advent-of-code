@@ -6,7 +6,7 @@ import lv.esupe.aoc.utils.asString
 import lv.esupe.aoc.utils.forAllPairs
 
 
-fun main(args: Array<String>) = solve { Day2() }
+fun main() = solve { Day2() }
 
 class Day2 : Puzzle<Int, String>(2018, 2) {
     override val input = rawInput

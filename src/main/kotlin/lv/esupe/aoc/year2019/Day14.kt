@@ -4,7 +4,7 @@ import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.nearestMultipleAtOrAbove
 
-fun main(args: Array<String>) = solve { Day14() }
+fun main() = solve { Day14() }
 
 class Day14 : Puzzle<Long, Long>(2019, 14) {
 

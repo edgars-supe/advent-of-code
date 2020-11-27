@@ -5,7 +5,7 @@ import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.asString
 import lv.esupe.aoc.utils.count
 
-fun main(args: Array<String>) = solve { Day8() }
+fun main() = solve { Day8() }
 
 class Day8 : Puzzle<Int, String>(2019, 8) {
 

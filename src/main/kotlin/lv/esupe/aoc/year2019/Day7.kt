@@ -8,10 +8,8 @@ import lv.esupe.aoc.utils.permute
 import lv.esupe.aoc.year2019.model.Intcode
 import lv.esupe.aoc.year2019.model.toProgram
 
-@ExperimentalCoroutinesApi
-fun main(args: Array<String>) = solve { Day7() }
+fun main() = solve { Day7() }
 
-@ExperimentalCoroutinesApi
 class Day7 : Puzzle<Long, Long>(2019, 7) {
 
     override val input = rawInput[0].toProgram()

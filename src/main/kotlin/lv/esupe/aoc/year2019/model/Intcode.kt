@@ -1,6 +1,5 @@
 package lv.esupe.aoc.year2019.model
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.toList
 import kotlinx.coroutines.coroutineScope
@@ -12,7 +11,6 @@ private typealias Memory = MutableMap<Long, Long>
 
 fun String.toProgram() = split(",").map { it.toLong() }
 
-@ExperimentalCoroutinesApi
 class Intcode(
     program: List<Long>,
     val input: Channel<Long> = Channel(Channel.UNLIMITED),

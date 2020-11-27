@@ -3,10 +3,8 @@ package lv.esupe.aoc.year2017
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.asString
-import kotlin.math.absoluteValue
-import kotlin.math.pow
 
-fun main(args: Array<String>) = solve { Day4() }
+fun main() = solve { Day4() }
 
 class Day4 : Puzzle<Int, Int>(2017, 4) {
     override val input = rawInput.map { it.split(" ") }

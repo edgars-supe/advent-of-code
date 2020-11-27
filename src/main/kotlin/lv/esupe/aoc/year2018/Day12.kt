@@ -3,7 +3,7 @@ package lv.esupe.aoc.year2018
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 
-fun main(args: Array<String>) = solve { Day12() }
+fun main() = solve { Day12() }
 
 class Day12 : Puzzle<Int, Long>(2018, 12) {
     override val input = rawInput

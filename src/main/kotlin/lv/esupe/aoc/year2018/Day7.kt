@@ -5,7 +5,7 @@ import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.toAlphabetIndex
 
 
-fun main(args: Array<String>) = solve { Day7() }
+fun main() = solve { Day7() }
 
 class Day7 : Puzzle<String, Int>(2018, 7) {
     override val input = rawInput.map { it[5] to it[36] }

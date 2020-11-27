@@ -6,7 +6,7 @@ import lv.esupe.aoc.utils.repeat
 import lv.esupe.aoc.utils.toIntValue
 import kotlin.math.absoluteValue
 
-fun main(args: Array<String>) = solve { Day16() }
+fun main() = solve { Day16() }
 
 class Day16 : Puzzle<Int, Int>(2019, 16) {
     override val input = rawInput[0].map { it.toIntValue() }

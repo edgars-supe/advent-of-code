@@ -6,7 +6,7 @@ import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.lcm
 import kotlin.math.abs
 
-fun main(args: Array<String>) = solve { Day12() }
+fun main() = solve { Day12() }
 
 class Day12 : Puzzle<Int, Long>(2019, 12) {
     override val input = rawInput.map { coordinates ->

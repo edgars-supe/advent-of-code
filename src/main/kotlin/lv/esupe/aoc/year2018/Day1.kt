@@ -5,7 +5,7 @@ import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.asInfiniteSequence
 
 
-fun main(args: Array<String>) = solve { Day1() }
+fun main() = solve { Day1() }
 
 class Day1 : Puzzle<Int, Int>(2018, 1) {
     override val input = rawInput.map { it.toInt() }
