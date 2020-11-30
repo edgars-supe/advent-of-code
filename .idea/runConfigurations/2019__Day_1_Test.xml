@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="2019, Day 1 Test" type="JUnit" factoryName="JUnit">
+  <configuration default="false" name="2019, Day 1 Test" type="JUnit" factoryName="JUnit" folderName="2019 Tests">
     <module name="advent-of-code.test" />
     <useClassPathOnly />
     <option name="PACKAGE_NAME" value="lv.esupe.aoc.year2019" />
