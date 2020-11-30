@@ -29,6 +29,8 @@ data class Point(
     fun right() = move(Direction.East)
 
     fun down() = move(Direction.South)
+
+    fun neighbors() = listOf(up(), right(), down(), left())
 }
 
 fun <T> MutableMap<Point, T>.asString(
