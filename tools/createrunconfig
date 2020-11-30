@@ -1,0 +1,35 @@
+#!/bin/bash
+createrunconfig() {
+  local year=$1
+  local day=$2
+
+  if [[ -z "$year" || -z "$day" ]]; then
+    echo "Missing params."
+    return 1
+  fi
+
+  local folder=.idea/runConfigurations/
+  if [[ ! -e "$folder" ]]; then
+    mkdir "$folder"
+  fi
+
+  local file="${folder}${year}__Day_${day}.xml"
+  echo "Creating run configuration: ${file}"
+
+echo "<component name=\"ProjectRunConfigurationManager\">
+  <configuration default=\"false\" name=\"${year}, Day ${day}\" type=\"JetRunConfigurationType\" folderName=\"${year}\">
+    <module name=\"advent-of-code.main\" />
+    <option name=\"VM_PARAMETERS\" value=\"\" />
+    <option name=\"PROGRAM_PARAMETERS\" value=\"\" />
+    <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"false\" />
+    <option name=\"ALTERNATIVE_JRE_PATH\" />
+    <option name=\"PASS_PARENT_ENVS\" value=\"true\" />
+    <option name=\"MAIN_CLASS_NAME\" value=\"lv.esupe.aoc.year${year}.Day${day}Kt\" />
+    <option name=\"WORKING_DIRECTORY\" value=\"\" />
+    <method v=\"2\">
+      <option name=\"Make\" enabled=\"true\" />
+    </method>
+  </configuration>
+</component>" >"${file}"
+  return 0
+}

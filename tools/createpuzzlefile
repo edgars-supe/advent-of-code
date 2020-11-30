@@ -1,0 +1,45 @@
+#!/bin/bash
+createpuzzlefile() {
+  local year=$1
+  local day=$2
+  local type1=${3:-Any}
+  local type2=${4:-Any}
+
+  if [[ -z $year || -z $day ]]; then
+    echo "Missing params."
+    exit 1
+  fi
+
+  local puzzledir="src/main/kotlin/lv/esupe/aoc/year$year/"
+  if [[ ! -e "$puzzledir" ]]; then
+    mkdir "$puzzledir"
+  fi
+
+  local file="${puzzledir}Day$day.kt"
+  if [[ -e $file ]]; then
+    read -p "File exists: ${file}. Overwrite? (y/N) " -r overwrite
+    [[ "$overwrite" =~ ^[yY]$ ]] || return 1
+  fi
+
+  echo "Creating puzzle class: $file"
+  echo "package lv.esupe.aoc.year${year}
+
+import lv.esupe.aoc.Puzzle
+import lv.esupe.aoc.solve
+
+fun main() = solve { Day${day}() }
+
+class Day${day} : Puzzle<${type1}, ${type2}>(${year}, ${day}) {
+    override val input = rawInput
+
+    override fun solvePartOne(): ${type1} {
+        TODO()
+    }
+
+    override fun solvePartTwo(): ${type2} {
+        TODO()
+    }
+}" >"${file}"
+
+  return $?
+}

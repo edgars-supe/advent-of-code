@@ -1,0 +1,47 @@
+#!/bin/bash
+usage() {
+  echo "Usage: puzzle <year> <day> [<type1> <type2>]
+  <year> - 4-digit number denoting the year of the puzzle
+  <day> - number denoting the day of the puzzle, [1; 31]
+  <type1> - return type for the solution of the first part of the puzzle, default - Any
+  <type2> - return type for the solution of the second part of the puzzle, default - Any"
+}
+
+getinput() {
+  local folder=src/main/resources/input/year$YEAR/
+  if [[ ! -d $folder ]]; then
+    mkdir "$folder"
+  fi
+  echo "Opening input file for editing: "
+  "${EDITOR:-vim}" src/main/resources/input/year$YEAR/day$DAY.in
+}
+
+invalidparam() {
+  echo "$1"
+  usage
+  exit 1
+}
+
+if [[ -z $1 || -n $1 && -z $2 || -n $3 && -z $4  ]]; then
+  usage
+  exit 1
+fi
+
+YEAR=$1
+DAY=$2
+TYPE1=${3:-Any}
+TYPE2=${4:-Any}
+
+[[ $YEAR =~ ^[0-9]{4}$ ]] || invalidparam "Invalid year."
+[[ $DAY =~ ^[1-9][0-9]?$ ]] || invalidparam "Invalid day."
+
+echo "Creating puzzle for $YEAR, Day $DAY..."
+source tools/createpuzzlefile
+
+createpuzzlefile $YEAR $DAY $TYPE1 $TYPE2
+if [[ $? -eq 0 ]]; then
+  source tools/createrunconfig
+  getinput
+  createrunconfig $YEAR $DAY
+  echo "All done! Happy coding!"
+fi
