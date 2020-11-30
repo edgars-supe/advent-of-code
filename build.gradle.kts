@@ -18,6 +18,7 @@ sourceSets.test {
 tasks.withType(KotlinCompile::class).configureEach {
     kotlinOptions.freeCompilerArgs += "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"
 }
+
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
