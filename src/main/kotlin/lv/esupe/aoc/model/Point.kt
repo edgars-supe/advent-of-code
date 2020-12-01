@@ -1,5 +1,6 @@
 package lv.esupe.aoc.model
 
+import lv.esupe.aoc.utils.gcd
 import kotlin.math.absoluteValue
 
 data class Point(
@@ -22,6 +23,8 @@ data class Point(
         return dx + dy
     }
 
+    infix fun distanceTo(other: Point) = distanceTo(other.x, other.y)
+
     fun up() = move(Direction.North)
 
     fun left() = move(Direction.West)
@@ -31,6 +34,13 @@ data class Point(
     fun down() = move(Direction.South)
 
     fun neighbors() = listOf(up(), right(), down(), left())
+
+    fun slope(other: Point): Point {
+        val dX = other.x - x
+        val dY = other.y - y
+        val gcd = gcd(dX.absoluteValue, dY.absoluteValue)
+        return Point(dX / gcd, dY / gcd)
+    }
 }
 
 fun <T> MutableMap<Point, T>.asString(
