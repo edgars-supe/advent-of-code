@@ -60,7 +60,7 @@ class Day11 : Puzzle<Int, String>(2019, 11) {
     }
 
     private fun printHull(hull: MutableMap<Point, Long>): String =
-        hull.asString() { x, y -> hull.getPanel(Point(x, y)).toString() }
+        hull.asString { x, y -> hull.getPanel(Point(x, y)).toString() }
             .replace('0', ' ')
             .replace('1', '@')
 

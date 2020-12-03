@@ -1,5 +1,7 @@
 package lv.esupe.aoc.utils
 
+import lv.esupe.aoc.model.Point
+
 
 fun <T> Array<Array<T>>.forEachIndexed(action: (Int, Int, T) -> Unit) {
     forEachIndexed { i: Int, array: Array<T> ->
@@ -24,3 +26,11 @@ inline fun LongRange.over(other: LongRange, action: (Long, Long) -> Unit) {
         }
     }
 }
+
+fun List<String>.toGrid() = this
+    .flatMapIndexed { col, line ->
+        line.mapIndexed { row, char ->
+            Point(row, col) to char
+        }
+    }
+    .associate { it }

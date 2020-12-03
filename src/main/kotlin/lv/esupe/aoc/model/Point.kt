@@ -43,12 +43,12 @@ data class Point(
     }
 }
 
-fun <T> MutableMap<Point, T>.asString(
+fun <T> Map<Point, T>.asString(
     prefix: String = "\n",
     transform: (T?) -> CharSequence
 ): String = asString(prefix) { x, y -> transform(get(Point(x, y))) }
 
-fun <T> MutableMap<Point, T>.asString(
+fun <T> Map<Point, T>.asString(
     prefix: String = "\n",
     producer: (x: Int, y: Int) -> CharSequence
 ): String {
@@ -56,7 +56,7 @@ fun <T> MutableMap<Point, T>.asString(
     val maxX = keys.maxBy { it.x }!!.x
     val minY = keys.minBy { it.y }!!.y
     val maxY = keys.maxBy { it.y }!!.y
-    return (maxY downTo minY)
+    return (minY .. maxY)
         .joinToString(prefix = prefix, separator = "\n") { y ->
             (minX..maxX).joinToString(separator = "") { x ->
                 producer(x, y)

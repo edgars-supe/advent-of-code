@@ -10,8 +10,8 @@ fun main() = solve { Day10() }
 
 class Day10 : Puzzle<Int, Int>(2019, 10) {
     override val input = rawInput
-        .flatMapIndexed { row, line ->
-            line.mapIndexedNotNull { col, char ->
+        .flatMapIndexed { col, line ->
+            line.mapIndexedNotNull { row, char ->
                 if (char == '#') Point(row, col)
                 else null
             }
