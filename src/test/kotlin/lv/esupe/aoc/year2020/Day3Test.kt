@@ -3,7 +3,7 @@ package lv.esupe.aoc.year2020
 import lv.esupe.aoc.DayTest
 import org.junit.jupiter.api.Test
 
-class Day3Test : DayTest<Int, Int>() {
+class Day3Test : DayTest<Long, Long>() {
     override val puzzle = { Day3() }
 
     @Test

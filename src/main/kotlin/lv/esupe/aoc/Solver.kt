@@ -30,28 +30,33 @@ private fun <T : Any, R : Any> printResult(block: () -> Puzzle<T, R>) {
 }
 
 private fun benchmark(block: () -> Puzzle<*, *>) {
-    println("Benchmarking...")
+    print("Benchmarking...")
+    val startTime = System.currentTimeMillis()
     var initTime = 0L
     var partOneTime = 0L
     var partTwoTime = 0L
-    repeat(5) {
+    var times = 0
+    while (System.currentTimeMillis() - startTime < 60000) {
+        times++
+        if (times % 100 == 0) print("\rBenchmarking... ($times runs)")
         lateinit var p: Puzzle<*, *>
         initTime += measureNanoTime { p = block() }
         partOneTime += measureNanoTime { p.solvePartOne() }
         partTwoTime += measureNanoTime { p.solvePartTwo() }
     }
-    initTime /= 5
-    partOneTime /= 5
-    partTwoTime /= 5
+    initTime /= times
+    partOneTime /= times
+    partTwoTime /= times
 
-    printBenchmark(initTime.toMillis(), partOneTime.toMillis(), partTwoTime.toMillis())
+    print("\n")
+    printBenchmark(times, initTime.toMillis(), partOneTime.toMillis(), partTwoTime.toMillis())
 }
 
-private fun printBenchmark(initTime: Float, partOneTime: Float, partTwoTime: Float) {
+private fun printBenchmark(times: Int, initTime: Float, partOneTime: Float, partTwoTime: Float) {
     println("Initialization took " + "%.3fms".format(initTime).bold())
     printPartBenchmark(1, partOneTime, initTime)
     printPartBenchmark(2, partTwoTime, initTime)
-    println("Total: " + "%.3fms".format(initTime + partOneTime + partTwoTime).bold())
+    println("Total: " + "%.3fms".format(initTime + partOneTime + partTwoTime).bold() + " (avg. of $times runs)")
 }
 
 private fun printPartBenchmark(part: Int, time: Float, initTime: Float) {
