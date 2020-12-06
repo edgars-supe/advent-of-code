@@ -55,3 +55,10 @@ fun <T> permute(list: List<T>): List<List<T>> {
         }
     return perms
 }
+
+fun <T> List<T>.chunkedBy(selector: (T) -> Boolean): List<List<T>> =
+    fold(mutableListOf(mutableListOf<T>())) { acc, item ->
+        if (selector(item)) acc.add(mutableListOf())
+        else acc.last().add(item)
+        acc
+    }
