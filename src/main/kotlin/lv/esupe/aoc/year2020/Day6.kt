@@ -9,7 +9,7 @@ fun main() = solve { Day6() }
 class Day6 : Puzzle<Int, Int>(2020, 6) {
     override val input: List<List<Set<Char>>> = rawInput.chunkedBy { it.isBlank() }
         .map { it.map(String::toSet) }
-g
+
     override fun solvePartOne(): Int = input.sumBy { it.reduceAndCount { acc, set -> acc union set } }
 
     override fun solvePartTwo(): Int = input.sumBy { it.reduceAndCount { acc, set -> acc intersect set } }
