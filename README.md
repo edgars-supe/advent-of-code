@@ -40,8 +40,8 @@ Each file containing a puzzle solution also has a main entry function which call
 ```kotlin
 fun main() = solve { Day1() }
 ```
-This method will run the provided puzzle, output the solutions and then run the solution 5 times to measure the
-execution time for the initialization of the class and computation time for both solutions.
+This method will run the provided puzzle, output the solutions and then benchmark the solution repeatedly for 1 minute to measure the
+average execution time for the initialization of the class and computation time for both solutions.
 
 Neatly grouped run configuration files for IntelliJ IDEA are provided.
 
