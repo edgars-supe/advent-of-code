@@ -12,6 +12,8 @@ enum class Direction(val point: Point) {
     val right: Direction get() = getByOffset(1)
     val opposite: Direction get() = getByOffset(2)
 
+    operator fun times(by: Int) = point * by
+
     private fun getByOffset(offset: Int): Direction {
         val values = values()
         val index = values.indexOf(this)
