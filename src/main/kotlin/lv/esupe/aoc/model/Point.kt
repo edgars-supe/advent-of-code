@@ -33,7 +33,8 @@ data class Point(
 
     fun down() = move(Direction.South)
 
-    fun neighbors() = listOf(up(), right(), down(), left())
+    fun neighbors(diagonal: Boolean = false) = listOf(up(), right(), down(), left()) +
+        if (diagonal) listOf(up().right(), right().down(), down().left(), left().up()) else emptyList()
 
     fun slope(other: Point): Point {
         val dX = other.x - x
