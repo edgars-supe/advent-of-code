@@ -27,10 +27,9 @@ class Day14 : Puzzle<Long, Long>(2020, 14) {
         val memory = mutableMapOf<Long, Long>()
         var mask = Array(MASK_BITS) { Mask.F }
         input.forEach { cmd ->
-            if (cmd is Input.Mask) {
-                mask = cmd.mask
-            } else if (cmd is Input.Memory) {
-                memory[cmd.addr] = applyMaskToValue(mask, cmd.value)
+            when (cmd) {
+                is Input.Mask -> mask = cmd.mask
+                is Input.Memory -> memory[cmd.addr] = applyMaskToValue(mask, cmd.value)
             }
         }
         return memory.values.sum()
@@ -42,10 +41,7 @@ class Day14 : Puzzle<Long, Long>(2020, 14) {
         input.forEach { cmd ->
             when (cmd) {
                 is Input.Mask -> mask = cmd.mask
-                is Input.Memory -> {
-                    getAddresses(cmd.addr, mask)
-                        .forEach { a -> memory[a] = cmd.value }
-                }
+                is Input.Memory -> getAddresses(cmd.addr.toBitSet(), mask).forEach { a -> memory[a] = cmd.value }
             }
         }
         return memory.values.sum()
@@ -62,26 +58,19 @@ class Day14 : Puzzle<Long, Long>(2020, 14) {
         return valueBits.toLong()
     }
 
-    private fun getAddresses(addr: Long, mask: Array<Mask>): List<Long> {
-        val addrBitSet = addr.toBitSet()
-        mask.withIndex()
-            .filter { (_, m) -> m == Mask.T }
-            .forEach { (idx, _) ->
-                addrBitSet.set(MASK_PAD + idx, true)
+    private fun getAddresses(addr: BitSet, mask: Array<Mask>): List<Long> = mask
+        .onEachIndexed { idx, m -> if (m == Mask.T) addr.set(MASK_PAD + idx, true) }
+        .indices
+        .filter { mask[it] == Mask.X }
+        .fold(listOf(addr)) { acc, idx ->
+            acc.flatMap { bitSet ->
+                listOf(
+                    (bitSet.clone() as BitSet).apply { set(MASK_PAD + idx, true) },
+                    (bitSet.clone() as BitSet).apply { set(MASK_PAD + idx, false) }
+                )
             }
-
-        return mask.indices
-            .filter { mask[it] == Mask.X }
-            .fold(listOf(addrBitSet)) { acc, idx ->
-                acc.flatMap { bitSet ->
-                    listOf(
-                        (bitSet.clone() as BitSet).apply { set(MASK_PAD + idx, true) },
-                        (bitSet.clone() as BitSet).apply { set(MASK_PAD + idx, false) }
-                    )
-                }
-            }
-            .map { it.toLong() }
-    }
+        }
+        .map { it.toLong() }
 
     sealed class Input {
         class Mask(val mask: Array<Day14.Mask>) : Input() {
