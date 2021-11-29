@@ -53,10 +53,10 @@ fun <T> Map<Point, T>.asString(
     prefix: String = "\n",
     producer: (x: Int, y: Int) -> CharSequence
 ): String {
-    val minX = keys.minBy { it.x }!!.x
-    val maxX = keys.maxBy { it.x }!!.x
-    val minY = keys.minBy { it.y }!!.y
-    val maxY = keys.maxBy { it.y }!!.y
+    val minX = keys.minOf { it.x }
+    val maxX = keys.maxOf { it.x }
+    val minY = keys.minOf { it.y }
+    val maxY = keys.maxOf { it.y }
     return (minY .. maxY)
         .joinToString(prefix = prefix, separator = "\n") { y ->
             (minX..maxX).joinToString(separator = "") { x ->

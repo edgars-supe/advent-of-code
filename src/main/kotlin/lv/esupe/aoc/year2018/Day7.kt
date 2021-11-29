@@ -31,7 +31,7 @@ class Day7 : Puzzle<String, Int>(2018, 7) {
         val workers = mutableMapOf<Char, Int>()
         while (queue.isNotEmpty() || workers.isNotEmpty()) {
             val removed = workers
-                .minBy { it.value }
+                .minByOrNull { it.value }
                 ?.let { min -> workers.filterValues { it == min.value } }
             removed?.keys?.sorted()?.forEach {
                 workers.remove(it)

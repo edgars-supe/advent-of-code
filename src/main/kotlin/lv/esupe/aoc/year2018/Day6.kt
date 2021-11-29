@@ -13,10 +13,10 @@ class Day6 : Puzzle<Int, Int>(2018, 6) {
     override val input = rawInput
         .map { it.split(", ") }
         .map { Point(it[0].toInt(), it[1].toInt()) }
-    val minX = input.minBy { it.x }!!.x
-    val minY = input.minBy { it.y }!!.y
-    val maxX = input.maxBy { it.x }!!.x
-    val maxY = input.maxBy { it.y }!!.y
+    val minX = input.minOf { it.x }
+    val minY = input.minOf { it.y }
+    val maxX = input.maxOf { it.x }
+    val maxY = input.maxOf { it.y }
 
     override fun solvePartOne(): Int {
         val map = mutableMapOf<Point, Int>()
@@ -30,7 +30,7 @@ class Day6 : Puzzle<Int, Int>(2018, 6) {
                 }
             }
         }
-        return map.values.max()!!
+        return map.values.maxOrNull()!!
     }
 
     override fun solvePartTwo(): Int {
@@ -51,7 +51,7 @@ class Day6 : Puzzle<Int, Int>(2018, 6) {
 private fun List<Point>.nearestTo(x: Int, y: Int) =
     map { it.distanceTo(x, y) }
         .let { list ->
-            val min = list.min()?.takeIf { list.countOf(it) == 1 }
+            val min = list.minOrNull()?.takeIf { list.countOf(it) == 1 }
             min?.let { list.indexOf(it) }
                 ?.let { get(it) }
         }

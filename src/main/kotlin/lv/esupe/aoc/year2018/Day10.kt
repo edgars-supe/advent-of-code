@@ -22,10 +22,10 @@ class Day10 : Puzzle<String, Int>(2018, 10) {
     }
     val points = input.toMutableList()
     var count: Int = -1
-    val minX get() = points.minBy { it.first.x }!!.first.x
-    val minY get() = points.minBy { it.first.y }!!.first.y
-    val maxX get() = points.maxBy { it.first.x }!!.first.x
-    val maxY get() = points.maxBy { it.first.y }!!.first.y
+    val minX get() = points.minOf { it.first.x }
+    val minY get() = points.minOf { it.first.y }
+    val maxX get() = points.maxOf { it.first.x }
+    val maxY get() = points.maxOf { it.first.y }
 
     override fun solvePartOne(): String {
         val sb = StringBuilder("\n")

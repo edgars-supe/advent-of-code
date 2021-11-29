@@ -1,7 +1,11 @@
 package lv.esupe.aoc.year2019
 
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.last
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.permute
@@ -16,18 +20,16 @@ class Day7 : Puzzle<Long, Long>(2019, 7) {
 
     override fun solvePartOne(): Long = runBlocking {
         permute(listOf(0L, 1L, 2L, 3L, 4L))
-            .map { perm ->
+            .maxOf { perm ->
                 (0..4).fold(0L) { inp, i ->
                     Intcode(input).execute(inputs = listOf(perm[i], inp)).last()
                 }
             }
-            .max()!!
     }
 
     override fun solvePartTwo(): Long = runBlocking(Dispatchers.Default) {
         permute(listOf(5L, 6L, 7L, 8L, 9L))
-            .map { perm -> calculateOutput(perm) }
-            .max()!!
+            .maxOf { perm -> calculateOutput(perm) }
     }
 
     private suspend fun calculateOutput(perm: List<Long>): Long {
@@ -43,6 +45,6 @@ class Day7 : Puzzle<Long, Long>(2019, 7) {
             launch { d.execute() }
             launch { e.execute() }
         }
-        return e.output.last()
+        return e.output.consumeAsFlow().last()
     }
 }

@@ -9,7 +9,7 @@ fun main() = solve { Day2() }
 class Day2 : Puzzle<Int, Int>(2017, 2) {
     override val input = rawInput.toIntRows()
 
-    override fun solvePartOne(): Int = input.map { row -> row.max()!! - row.min()!! }.sum()
+    override fun solvePartOne(): Int = input.sumOf { row -> (row.maxOrNull() ?: 0) - (row.minOrNull() ?: 0) }
 
     override fun solvePartTwo(): Int =
         input.map { row ->

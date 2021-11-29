@@ -4,7 +4,7 @@ import lv.esupe.aoc.DayTest
 import lv.esupe.aoc.Puzzle
 import org.junit.jupiter.api.Test
 
-class Day16Test : DayTest<Int, Int>() {
+class Day16Test : DayTest<Int, Long>() {
     override val puzzle = { Day16() }
 
     @Test

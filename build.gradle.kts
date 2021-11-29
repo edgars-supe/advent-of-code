@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.20"
+    kotlin("jvm") version "1.6.0"
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 sourceSets.main {
@@ -15,13 +15,13 @@ sourceSets.test {
     java.srcDirs("src/test/kotlin")
 }
 
-tasks.withType(KotlinCompile::class).configureEach {
+tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.freeCompilerArgs += "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 }
 
 tasks.test {

@@ -1,8 +1,9 @@
 package lv.esupe.aoc.year2019
 
 import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.channels.last
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import lv.esupe.aoc.Puzzle
@@ -73,7 +74,7 @@ class Day17 : Puzzle<Int, Long>(2019, 17) {
                 intcode.sendLine("n")
             }
         }
-        intcode.output.last()
+        intcode.output.consumeAsFlow().last()
     }
 
     private suspend fun Intcode.sendLine(line: String) {

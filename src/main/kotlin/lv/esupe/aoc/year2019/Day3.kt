@@ -15,11 +15,9 @@ class Day3 : Puzzle<Int, Int>(2019, 3) {
     private val wire2 = input.last().traverse()
     private val crossingPoints = wire1.intersect(wire2)
 
-    override fun solvePartOne(): Int = crossingPoints.map { it.distanceTo(0, 0) }.min()!!
+    override fun solvePartOne(): Int = crossingPoints.minOf { it.distanceTo(0, 0) }
 
-    override fun solvePartTwo(): Int = crossingPoints
-        .map { wire1.indexOf(it) + wire2.indexOf(it) + 2}
-        .min()!!
+    override fun solvePartTwo(): Int = crossingPoints.minOf { wire1.indexOf(it) + wire2.indexOf(it) + 2 }
 
     private fun List<Path>.traverse(): List<Point> {
         var current = Point(0, 0)

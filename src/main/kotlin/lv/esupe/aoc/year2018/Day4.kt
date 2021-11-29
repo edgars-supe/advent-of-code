@@ -10,13 +10,13 @@ class Day4 : Puzzle<Int, Int>(2018, 4) {
     override val input = rawInput.toSleepMap()
 
     override fun solvePartOne(): Int =
-        input.maxBy { it.value.sum() }
-            ?.let { it.key.toInt() * it.value.indexOf(it.value.max()!!) }
+        input.maxByOrNull { it.value.sum() }
+            ?.let { it.key.toInt() * it.value.indexOf(it.value.maxOrNull()!!) }
             ?: throw Exception("Grinch stole Christmas")
 
     override fun solvePartTwo(): Int =
-        input.maxBy { it.value.max()!! }
-            ?.let { it.key.toInt() * it.value.indexOf(it.value.max()!!) }
+        input.maxByOrNull { it.value.maxOrNull()!! }
+            ?.let { it.key.toInt() * it.value.indexOf(it.value.maxOrNull()!!) }
             ?: throw Exception("Grinch stole Christmas")
 }
 

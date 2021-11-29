@@ -12,7 +12,7 @@ class Day8 : Puzzle<Int, String>(2019, 8) {
     override val input = rawInput[0].chunked(25 * 6)
 
     override fun solvePartOne(): Int = input
-        .minBy { it.count('0') }
+        .minByOrNull { it.count('0') }
         ?.let { it.count('1') * it.count('2') }
         ?: -1
 

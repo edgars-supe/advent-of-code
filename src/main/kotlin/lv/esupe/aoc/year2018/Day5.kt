@@ -14,11 +14,13 @@ class Day5 : Puzzle<Int, Int>(2018, 5) {
         input.destroyUnits().length
 
     override fun solvePartTwo(): Int =
-        ('a'..'z').pmap {
-            input.filterNot { c -> c.toLowerCase() == it }
-                .destroyUnits()
-                .length
-        }.minBy { it }!!
+        ('a'..'z')
+            .pmap {
+                input.filterNot { c -> c.lowercaseChar() == it }
+                    .destroyUnits()
+                    .length
+            }
+            .minByOrNull { it }!!
 }
 
 private fun String.destroyUnits(): String {
@@ -48,5 +50,5 @@ private fun String.destroyUnitsSinglePass(): String {
 private fun Char.isReverseCase(other: Char?): Boolean = other == reverseCase()
 
 private fun Char.reverseCase(): Char =
-    if (isLowerCase()) toUpperCase()
-    else toLowerCase()
+    if (isLowerCase()) uppercaseChar()
+    else lowercaseChar()

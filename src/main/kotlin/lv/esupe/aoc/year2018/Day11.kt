@@ -35,7 +35,7 @@ class Day11 : Puzzle<String, String>(2018, 11) {
                 results += async { calculateAreas(i) }
             }
             results.map { it.await() }
-                .maxBy { it.power }!!.let {
+                .maxByOrNull { it.power }!!.let {
                 return@runBlocking "${it.topLeft.x},${it.topLeft.y},${it.length}"
             }
         }

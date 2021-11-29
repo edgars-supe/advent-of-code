@@ -26,8 +26,8 @@ class Day12 : Puzzle<Int, Long>(2018, 12) {
     private fun Map<Int, Boolean>.evolve(times: Long): Map<Int, Boolean> {
         return (1L..times).fold(this.toMutableMap()) { acc, _ ->
             mutableMapOf<Int, Boolean>().also {
-                val lowest = acc.keys.min()!! - 2
-                val highest = acc.keys.max()!! + 2
+                val lowest = acc.keys.minOrNull()!! - 2
+                val highest = acc.keys.maxOrNull()!! + 2
                 (lowest..highest).forEach { index ->
                     it[index] = acc.findMatchingRule(index).result
                 }

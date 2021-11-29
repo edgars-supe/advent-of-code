@@ -15,14 +15,14 @@ class Day9 : Puzzle<Long, Long>(2018, 9) {
 
     override fun solvePartOne(): Long {
         play(marbles)
-        return scores.max()!!
+        return scores.maxOrNull()!!
     }
 
     override fun solvePartTwo(): Long {
         for (i in 0 until circle.size) { circle[i] = 0 }
         for (i in 0 until scores.size) { scores[i] = 0L }
         play(marbles * 100)
-        return scores.max()!!
+        return scores.maxOrNull()!!
     }
 
     private fun play(marbleCount: Int) {
