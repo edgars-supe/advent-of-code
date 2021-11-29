@@ -8,10 +8,12 @@ object Solver {
     var suffix: String = ""
 }
 
-fun <T : Any, R : Any> solve(block: () -> Puzzle<T, R>) {
+fun <T : Any, R : Any> solve(benchmark: Boolean = true, block: () -> Puzzle<T, R>) {
     printResult(block)
-    println()
-    benchmark(block)
+    if (benchmark) {
+        println()
+        benchmark(block)
+    }
 }
 
 fun getInput(year: Int, day: Int): List<String> =
