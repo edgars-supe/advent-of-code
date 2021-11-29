@@ -38,7 +38,7 @@ class Day17 : Puzzle<Int, Long>(2019, 17) {
                         x = 0
                         y--
                     } else {
-                        grid[Point(x++, y)] = out.toChar()
+                        grid[Point(x++, y)] = out.toInt().toChar()
                     }
                 }
             }
@@ -78,7 +78,7 @@ class Day17 : Puzzle<Int, Long>(2019, 17) {
     }
 
     private suspend fun Intcode.sendLine(line: String) {
-        line.map { it.toInt() }
+        line.map { it.code }
             .forEach { input.send(it.toLong()) }
             .also { input.send(10) }
     }

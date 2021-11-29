@@ -21,7 +21,7 @@ class Day12 : Puzzle<Int, Long>(2019, 12) {
 
     override fun solvePartOne(): Int = (0 until 1000)
         .fold(input) { moons, _ -> moons.step() }
-        .sumBy { it.energy }
+        .sumOf { it.energy }
 
     override fun solvePartTwo(): Long {
         var xPeriod = 0L

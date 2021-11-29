@@ -10,7 +10,7 @@ class Day3 : Puzzle<Int, String>(2018, 3) {
     override val input = rawInput.map { it.toClaim() }
     val sheet = createSheet().apply { input.forEach { plotClaim(it) } }
 
-    override fun solvePartOne(): Int = sheet.sumBy { it.count { cell -> cell > 1 } }
+    override fun solvePartOne(): Int = sheet.sumOf { it.count { cell -> cell > 1 } }
 
     override fun solvePartTwo(): String = input.first { sheet.hasNoOverlap(it) }.id
 }
@@ -25,12 +25,12 @@ data class Claim(
 
 private fun createSheet() = Array(1000) { Array(1000) { 0 } }
 
-private fun String.toClaim(): Claim = split(" ")
-    .let {
-        val (x, y) = it[2].split(',').map { it.removeSuffix(":").toInt() }
-        val (width, height) = it[3].split('x').map { it.toInt() }
-        Claim(it[0], x, y, width, height)
-    }
+private fun String.toClaim(): Claim {
+    val parts = split(" ")
+    val (x, y) = parts[2].split(',').map { it.removeSuffix(":").toInt() }
+    val (width, height) = parts[3].split('x').map { it.toInt() }
+    return Claim(parts[0], x, y, width, height)
+}
 
 private fun Array<Array<Int>>.plotClaim(it: Claim) {
     for (i in it.x until it.x + it.width) {

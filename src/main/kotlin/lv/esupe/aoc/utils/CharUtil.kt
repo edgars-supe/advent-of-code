@@ -1,9 +1,9 @@
 package lv.esupe.aoc.utils
 
 
-fun Char.toIntValue(): Int = toInt() - 48
+fun Char.toIntValue(): Int = code - '0'.code
 
-fun Char.toAlphabetIndex(): Int = toLowerCase() - 'a'
+fun Char.toAlphabetIndex(): Int = lowercaseChar() - 'a'
 
 fun List<Char>.asString(): String = joinToString(separator = "")
 

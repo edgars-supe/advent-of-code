@@ -53,6 +53,7 @@ class Day14 : Puzzle<Long, Long>(2020, 14) {
             when (m) {
                 Mask.T -> valueBits.set(MASK_PAD + idx, true)
                 Mask.F -> valueBits.set(MASK_PAD + idx, false)
+                else -> { }
             }
         }
         return valueBits.toLong()

@@ -8,9 +8,9 @@ fun main() = solve { Day1() }
 class Day1 : Puzzle<Int, Int>(2019, 1) {
     override val input = rawInput.map { it.toInt() }
 
-    override fun solvePartOne(): Int = input.sumBy { it.fuelReqs() }
+    override fun solvePartOne(): Int = input.sumOf { it.fuelReqs() }
 
-    override fun solvePartTwo(): Int = input.sumBy { it.metaReqs() }
+    override fun solvePartTwo(): Int = input.sumOf { it.metaReqs() }
 
     private fun Int.metaReqs(): Int {
         val reqs = fuelReqs()

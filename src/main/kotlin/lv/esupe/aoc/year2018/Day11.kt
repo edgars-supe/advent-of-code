@@ -10,7 +10,7 @@ fun main() = solve { Day11() }
 class Day11 : Puzzle<String, String>(2018, 11) {
     override val input = rawInput.first().toInt()
     private val size = 300
-    private val grid = Array(size) { Array(size) { null as Cell? } }
+    private val grid: Array<Array<Cell?>> = Array(size) { Array(size) { null } }
 
     override fun solvePartOne(): String {
         var maxArea = 0
