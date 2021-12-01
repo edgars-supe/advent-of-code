@@ -26,7 +26,7 @@ class Day1 : Puzzle<Int, Int>(2020, 1) {
 `rawInput` is a `List<String>`, each element being a row of the input file. E.g., if the input was a single line of
 comma-separated integers, you could define the input value as
 ```kotlin
-override val input: List<Int> = rawInput[0].split(",")
+override val input: List<Int> = rawInput[0].split(",").map { it.toInt() }
 ```
 
 Functions `solvePartOne()` and `solvePartTwo()` should contain the solution for the respective part of the puzzle. The
