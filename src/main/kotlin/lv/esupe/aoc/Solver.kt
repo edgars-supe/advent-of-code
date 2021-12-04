@@ -1,5 +1,6 @@
 package lv.esupe.aoc
 
+import lv.esupe.aoc.utils.bold
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.system.measureNanoTime
@@ -68,12 +69,6 @@ private fun printPartBenchmark(part: Int, time: Float, initTime: Float) {
             ", including init: " +
             "%.3fms".format((initTime + time)).bold()
     )
-}
-
-private fun Any.bold(color: String = ""): String = style("$color;1")
-
-private fun Any.style(color: String): String {
-    return "\u001B[${color}m$this\u001B[0m"
 }
 
 private fun Long.toMillis() = this / 1000000f
