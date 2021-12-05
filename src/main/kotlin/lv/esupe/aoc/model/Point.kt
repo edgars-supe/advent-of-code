@@ -42,6 +42,18 @@ data class Point(
         val gcd = gcd(dX.absoluteValue, dY.absoluteValue)
         return Point(dX / gcd, dY / gcd)
     }
+
+    fun pointsTo(other: Point): Sequence<Point> {
+        val slope = this.slope(other)
+        return sequence {
+            yield(this@Point)
+            var curr = this@Point
+            while (curr != other) {
+                curr += slope
+                yield(curr)
+            }
+        }
+    }
 }
 
 fun <T> Map<Point, T>.asString(
