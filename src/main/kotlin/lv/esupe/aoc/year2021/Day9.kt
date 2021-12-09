@@ -32,7 +32,7 @@ class Day9 : Puzzle<Int, Int>(2021, 9) {
         }
         return basins.sortedDescending()
             .take(3)
-            .fold(1) { acc, i -> acc * i }
+            .reduce { acc, i -> acc * i }
     }
 
     private fun countBasinPoints(map: MutableMap<Point, Int>, point: Point): Int {
