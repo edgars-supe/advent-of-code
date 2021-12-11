@@ -1,0 +1,53 @@
+#!/bin/bash
+createtestfile() {
+  local year=$1
+  local day=$2
+  local type1=${3:-Any}
+  local type2=${4:-Any}
+
+  if [[ -z $year || -z $day ]]; then
+    echo "Missing params."
+    exit 1
+  fi
+
+  local puzzledir="src/test/kotlin/lv/esupe/aoc/year$year/"
+  if [[ ! -e "$puzzledir" ]]; then
+    mkdir "$puzzledir"
+  fi
+
+  local file="${puzzledir}Day${day}Test.kt"
+  if [[ -e $file ]]; then
+    read -p "File exists: ${file}. Overwrite? (y/N) " -r overwrite
+    [[ "$overwrite" =~ ^[yY]$ ]] || return 1
+  fi
+
+  echo "Creating test class: $file"
+  echo "package lv.esupe.aoc.year${year}
+
+import lv.esupe.aoc.DayTest
+import org.junit.jupiter.api.Test
+
+class Day${day}Test : DayTest<${type1}, ${type2}>() {
+    override val puzzle = { Day${day}() }
+
+    @Test
+    fun day${day}_1() {
+        runTest(\"_1\", TODO(), TODO())
+    }
+}" >"${file}"
+
+  local inputfolder=src/test/resources/input/year$year/
+  local inputfile="${inputfolder}day${day}_1.in"
+  if [[ -e $inputfile ]]; then
+    read -p "File exists: ${inputfile}. Overwrite? (y/N) " -r overwrite
+    [[ "$overwrite" =~ ^[yY]$ ]] || return 1
+  fi
+
+  echo "Creating test input file: $inputfile"
+  if [[ ! -d $inputfolder ]]; then
+    mkdir "$inputfolder"
+  fi
+  touch "$inputfile"
+
+  return $?
+}
