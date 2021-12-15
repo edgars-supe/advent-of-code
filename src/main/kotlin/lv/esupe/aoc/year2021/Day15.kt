@@ -30,51 +30,29 @@ class Day15 : Puzzle<Int, Int>(2021, 15) {
         val start = Point(0, 0)
         val target = Point(width - 1, height - 1)
         return aStar(start, target, width - 1, height - 1)
-            .drop(1)
-            .sumOf { getRisk(it) }
     }
 
-    private fun aStar(start: Point, target: Point, maxX: Int, maxY: Int): List<Point> {
-        val h = { n: Point -> n.distanceTo(target) }
-
-        val fScore = mutableMapOf<Point, Int>()
-        fScore[start] = h(start)
-
-        val openSet = PriorityQueue<Point>(maxX * maxY, compareBy { point -> fScore[point] })
-        openSet.add(start)
-
-        val cameFrom = mutableMapOf<Point, Point>()
+    private fun aStar(start: Point, target: Point, maxX: Int, maxY: Int): Int {
         val gScore = mutableMapOf<Point, Int>().withDefault { Int.MAX_VALUE }
         gScore[start] = 0
 
+        val openSet = PriorityQueue<Point>(maxX * maxY, compareBy { point -> gScore.getValue(point) })
+        openSet.add(start)
+
         while (openSet.isNotEmpty()) {
             val current = openSet.remove()
-            if (current == target) return reconstructPath(cameFrom, current)
+            if (current == target) return gScore.getValue(target)
 
             current.neighbors().filter { p -> p.x in 0..maxX && p.y in 0..maxY }
                 .forEach { neighbor ->
-                    val tentative = (gScore[current] ?: Int.MAX_VALUE) + getRisk(neighbor)
-                    if (tentative < (gScore[neighbor] ?: Int.MAX_VALUE)) {
-                        cameFrom[neighbor] = current
+                    val tentative = gScore.getValue(current) + getRisk(neighbor)
+                    if (tentative < gScore.getValue(neighbor)) {
                         gScore[neighbor] = tentative
-                        fScore[neighbor] = tentative + h(neighbor)
-                        if (neighbor !in openSet) {
-                            openSet.add(neighbor)
-                        }
+                        openSet.add(neighbor)
                     }
                 }
         }
         error("Path not found")
-    }
-
-    private fun reconstructPath(cameFrom: Map<Point, Point>, goal: Point): List<Point> {
-        val totalPath = mutableListOf(goal)
-        var current = goal
-        while (current in cameFrom.keys) {
-            current = cameFrom[current]!!
-            totalPath.add(0, current)
-        }
-        return totalPath
     }
 
     private val riskCache: MutableMap<Point, Int> = mutableMapOf()
