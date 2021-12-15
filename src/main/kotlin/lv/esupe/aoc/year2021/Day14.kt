@@ -3,6 +3,7 @@ package lv.esupe.aoc.year2021
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.mergeWith
+import lv.esupe.aoc.utils.pmap
 
 fun main() = solve { Day14() }
 
@@ -35,7 +36,7 @@ class Day14 : Puzzle<Long, Long>(2021, 14) {
 
     private fun solve(steps: Int): Long {
         val counts = template.windowed(size = 2, step = 1)
-            .map { pair ->
+            .pmap { pair ->
                 val node = nodes.first { it.pair == pair }
                 poly(node, steps, 0).toMutableMap()
             }
