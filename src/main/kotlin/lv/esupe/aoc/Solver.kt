@@ -7,21 +7,26 @@ import kotlin.system.measureNanoTime
 
 object Solver {
     var suffix: String = ""
+
+    val defaultInputProvider: (year: Int, day: Int) -> List<String> = { year, day ->
+        Puzzle::class.java.classLoader
+            .getResource("input/year$year/day$day$suffix.in")
+            .toURI()
+            .let { Paths.get(it) }
+            .let { Files.readAllLines(it) }
+    }
+
+    var inputProvider: (year: Int, day: Int) -> List<String> = defaultInputProvider
 }
 
 fun <T : Any, R : Any> solve(benchmark: Boolean = true, block: () -> Puzzle<T, R>) {
+    Solver.inputProvider = Solver.defaultInputProvider
     printResult(block)
     if (benchmark) {
         println()
         benchmark(block)
     }
 }
-
-fun getInput(year: Int, day: Int): List<String> =
-    Puzzle::class.java.classLoader.getResource("input/year$year/day$day${Solver.suffix}.in")
-        .toURI()
-        .let { Paths.get(it) }
-        .let { Files.readAllLines(it) }
 
 private fun <T : Any, R : Any> printResult(block: () -> Puzzle<T, R>) {
     val puzzle = block()
