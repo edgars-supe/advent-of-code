@@ -33,14 +33,14 @@ class Day17 : Puzzle<Int, Int>(2021, 17) {
             toY = -yRange.first
         )
             .maxOf { velocity ->
-                var vector = Vector(Point(0, 0), velocity)
+                val vector = Vector(Point(0, 0), velocity)
                 var maxY: Int = vector.location.y
                 while (safe(vector)) {
                     if (vector.location.y > maxY) {
                         maxY = vector.location.y
                     }
                     if (inTarget(vector)) return@maxOf maxY
-                    vector = step(vector)
+                    vector.step()
                 }
                 Int.MIN_VALUE
             }
@@ -55,10 +55,10 @@ class Day17 : Puzzle<Int, Int>(2021, 17) {
             toY = -yRange.first
         )
             .count { velocity ->
-                var vector = Vector(startLocation, velocity)
+                val vector = Vector(startLocation, velocity)
                 while (safe(vector)) {
                     if (inTarget(vector)) return@count true
-                    vector = step(vector)
+                    vector.step()
                 }
                 false
             }
@@ -79,20 +79,6 @@ class Day17 : Puzzle<Int, Int>(2021, 17) {
         }
     }
 
-    private fun step(vector: Vector): Vector {
-        val vx = vector.velocity.x
-        val nx = when {
-            vx > 0 -> vx - 1
-            vx < 0 -> vx + 1
-            else -> 0
-        }
-        val velocity = vector.velocity.copy(x = nx, y = vector.velocity.y - 1)
-        return vector.copy(
-            location = vector.location + vector.velocity,
-            velocity = velocity
-        )
-    }
-
     private fun inTarget(vector: Vector): Boolean {
         return vector.location.x in xRange && vector.location.y in yRange
     }
@@ -101,5 +87,22 @@ class Day17 : Puzzle<Int, Int>(2021, 17) {
         return vector.location.x <= xRange.last && vector.location.y >= yRange.first
     }
 
-    data class Vector(val location: Point, val velocity: Point)
+    class Vector(location: Point, velocity: Point) {
+        var location: Point = location
+            private set
+        var velocity: Point = velocity
+            private set
+
+        fun step() {
+            val vx = velocity.x
+            val nx = when {
+                vx > 0 -> vx - 1
+                vx < 0 -> vx + 1
+                else -> 0
+            }
+            val newVelocity = velocity.copy(x = nx, y = velocity.y - 1)
+            location += velocity
+            velocity = newVelocity
+        }
+    }
 }
