@@ -103,6 +103,7 @@ class Day16 : Puzzle<Long, Long>(2021, 16) {
             get() = charIndex * 4 + bitIndex
         private var bitIndex = 0
         private var charIndex = 0
+        private var currDigit = input[charIndex].digitToInt(16)
 
         fun takeInt(bits: Int): Int {
             var result = 0
@@ -117,11 +118,13 @@ class Day16 : Puzzle<Long, Long>(2021, 16) {
         }
 
         private fun next(): Int {
-            val bit = (input[charIndex].digitToInt(16) shr (3 - bitIndex)) and 1
-            bitIndex++
-            if (bitIndex >= 4) {
+            val bit = (currDigit shr (3 - bitIndex)) and 1
+
+            if (++bitIndex >= 4) {
                 bitIndex = 0
-                charIndex++
+                if (++charIndex < input.length) {
+                    currDigit = input[charIndex].digitToInt(16)
+                }
             }
             return bit
         }
