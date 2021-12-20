@@ -13,6 +13,8 @@ data class Point(
 
     operator fun times(by: Int) = Point(x * by, y * by)
 
+    fun move(dx: Int, dy: Int) = Point(x + dx, y + dy)
+
     fun move(direction: Direction) = this + direction.point
 
     fun moveBy(direction: Direction, amount: Int) = this + direction.point * amount
