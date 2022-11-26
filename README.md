@@ -29,10 +29,11 @@ comma-separated integers, you could define the input value as
 override val input: List<Int> = rawInput[0].split(",").map { it.toInt() }
 ```
 
-Functions `solvePartOne()` and `solvePartTwo()` should contain the solution for the respective part of the puzzle. The
-[`Solver`](src/main/kotlin/lv/esupe/aoc/Solver.kt) will run the solution 5 times to get an approximate running time. The
-solve functions will be run sequentially and a new instance of the solution class will be made for each benchmark run,
-so it is safe to add your own fields to the class, fill them in part 1 and use them in part 2.
+Functions `solvePartOne()` and `solvePartTwo()` should contain the solution for the respective part of the puzzle. By
+default, the [`Solver`](src/main/kotlin/lv/esupe/aoc/Solver.kt) will run the solution repeatedly for a minute to
+benchmark it. To disable this while working on the solution, call `solve(benchmark = false)`. The solve functions will
+be run sequentially and a new instance of the solution class will be made for each benchmark run, so it is safe to add
+your own fields to the class, fill them in part 1 and use them in part 2.
 
 ## Running
 
