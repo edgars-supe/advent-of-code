@@ -40,8 +40,8 @@ Each file containing a puzzle solution also has a main entry function which call
 ```kotlin
 fun main() = solve { Day1() }
 ```
-This method will run the provided puzzle, output the solutions and then benchmark the solution repeatedly for 1 minute to measure the
-average execution time for the initialization of the class and computation time for both solutions.
+This method will run the provided puzzle, output the solutions and then benchmark the solution repeatedly for 1 minute
+to measure the average execution time for the initialization of the class and computation time for both solutions.
 
 Neatly grouped run configuration files for IntelliJ IDEA are provided.
 
@@ -62,10 +62,22 @@ fun main() = solve { Day1() }
 
 ## Testing
 
-There's a small test framework class `DayTest`. Puzzle tests extend this class, provide a function to instantiate a new
-solution class, and define tests which call `DayTest.runTest(String, T, R)`, where `T` and `R` are return types for part
-1 and part 2, respectively. The `String` parameter is a suffix that's appended to the testcase input filename.
+There's a small test framework class `DayTest`. Puzzle tests extend this class; you must provide a function to
+instantiate a new solution class, and define tests which call one or more test methods.
 
-Test input files are located in `src/test/resources/input/year$year/`. Input files are named `day$day$suffix.in`, where
-`$suffix` is the suffix passed to `runTest()`. This is done because input filenames are taken automatically from the
-year and day, and since you can have multiple tests with different inputs per each day, suffixes are needed.
+### Testing both parts:
+* `fun runTest(suffix: String, part1: T, part2: R)` uses puzzle input files from 
+`src/test/resources/input/year$year/day$day_$suffix.in`; `part1` and `part2` are the expected results for the respective
+parts of the puzzle.
+* `fun test(input: String, part1: T, part2: R)` uses `input` as the single-line puzzle input.
+* `fun test(input: List<String>, part1: T, part2: R)` uses `input` as the lines of the input file.
+
+### Testing Part 1:
+* `fun testPartOne(input: String, expectedResult: T)`
+* `fun testPartOne(input: List<String>, expectedResult: T)`
+
+### Testing Part 2:
+Part 1 is run before evaluating the result of part 2 to ensure computations from part 1 are used in part 2, if
+necessary.
+* `fun testPartTwo(input: String, expectedResult: R)`
+* `fun testPartTwo(input: List<String>, expectedResult: R)`
