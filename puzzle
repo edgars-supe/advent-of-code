@@ -14,7 +14,7 @@ getinput() {
   fi
   if source .secret && [[ -n $SECRET ]]; then
     echo "Fetching input data"
-    curl -H "$SECRET" https://adventofcode.com/$YEAR/day/$DAY/input > src/main/resources/input/year$YEAR/day$DAY.in
+    curl -H "$SECRET" -A "$UA" https://adventofcode.com/$YEAR/day/$DAY/input > src/main/resources/input/year$YEAR/day$DAY.in
   else
     echo "Opening input file for editing"
     "${EDITOR:-vim}" src/main/resources/input/year$YEAR/day$DAY.in
