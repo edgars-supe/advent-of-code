@@ -19,10 +19,10 @@ class Day6 : Puzzle<Int, Int>(2022, 6) {
     private fun findMarker(length: Int): Int {
         return input
             .windowed(size = length, step = 1)
-            .withIndex()
-            .first { (_, chars) ->
-                chars.toSet().size == length
+            .indexOfFirst { chars ->
+                val set = hashSetOf<Char>()
+                chars.all { set.add(it) }
             }
-            .let { (idx, _) -> idx + length }
+            .plus(length)
     }
 }
