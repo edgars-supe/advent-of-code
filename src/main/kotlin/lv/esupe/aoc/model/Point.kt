@@ -2,6 +2,7 @@ package lv.esupe.aoc.model
 
 import lv.esupe.aoc.utils.gcd
 import kotlin.math.absoluteValue
+import kotlin.math.sign
 
 data class Point(
     val x: Int,
@@ -38,9 +39,21 @@ data class Point(
     fun neighbors(diagonal: Boolean = false) = listOf(up(), right(), down(), left()) +
         if (diagonal) listOf(up().right(), right().down(), down().left(), left().up()) else emptyList()
 
+    fun isNeighbor(other: Point, diagonal: Boolean = false): Boolean {
+        val d = this - other
+        return if (diagonal) {
+            d.x in -1..1 && d.y in -1..1
+        } else {
+            (d.x in -1..1) xor (d.y in -1..1)
+        }
+    }
+
     fun slope(other: Point): Point {
         val dX = other.x - x
         val dY = other.y - y
+        if (dX == 0) return Point(0, 1 * dY.sign)
+        else if (dY == 0) return Point(1 * dX.sign, 0)
+
         val gcd = gcd(dX.absoluteValue, dY.absoluteValue)
         return Point(dX / gcd, dY / gcd)
     }
