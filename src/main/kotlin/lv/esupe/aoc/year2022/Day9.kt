@@ -21,33 +21,29 @@ class Day9 : Puzzle<Int, Int>(2022, 9) {
     }
 
     override fun solvePartOne(): Int {
-        var head = Point(0, 0)
-        var tail = Point(0, 0)
-        val tailVisits = hashSetOf(tail)
-        input.forEach { direction ->
-            head = head.move(direction)
-            tail = follow(tail, head)
-            tailVisits += tail
-        }
-        return tailVisits.count()
+        return simulateRope(2)
     }
 
     override fun solvePartTwo(): Int {
-        val points = MutableList(10) { Point(0, 0) }
-        val tailVisits = hashSetOf(points.last())
+        return simulateRope(10)
+    }
+
+    private fun simulateRope(knotCount: Int): Int {
+        val knots = MutableList(knotCount) { Point(0, 0) }
+        val tailVisits = hashSetOf(knots.last())
         input.forEach { direction ->
-            points[0] = points[0].move(direction)
-            points.indices.zipWithNext { targetIdx, pointIdx ->
-                points[pointIdx] = follow(points[pointIdx], points[targetIdx])
+            knots[0] = knots[0].move(direction)
+            for (i in 1 until knotCount) {
+                knots[i] = follow(knots[i], knots[i - 1])
             }
-            tailVisits += points.last()
+            tailVisits += knots.last()
         }
         return tailVisits.count()
     }
 
     private fun follow(point: Point, target: Point): Point {
         if (point != target && !point.isNeighbor(target, diagonal = true)) {
-            val (dx, dy) = point.slope(target)
+            val (dx, dy) = target.minus(point)
             return point.move(dx.coerceIn(-1..1), dy.coerceIn(-1..1))
         }
         return point
