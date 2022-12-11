@@ -1,6 +1,6 @@
 package lv.esupe.aoc.utils
 
-import java.util.*
+import java.util.BitSet
 
 fun Long.toBitSet(): BitSet {
     val bitSet = BitSet(Long.SIZE_BITS)
@@ -17,3 +17,5 @@ fun BitSet.toLong(): Long {
     }
     return value
 }
+
+fun List<Long>.product(): Long = fold(1) { acc, i -> acc * i }
