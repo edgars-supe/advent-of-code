@@ -1,17 +1,17 @@
 package lv.esupe.aoc.utils
 
 object Djikstra {
-    fun <T, R> findPath(start: T, target: R, getValue: (T) -> R, getNeighbors: (T) -> Collection<T>): List<T> {
-        djikstra(start, target, getValue, getNeighbors) { targetT, _, _, predecessors ->
-            return getPath(predecessors, targetT)
+    fun <T : Any, R : Any> findPath(start: T, target: R, getValue: (T) -> R, getNeighbors: (T) -> Collection<T>): TargetResult<T> {
+        djikstra(start, target, getValue, getNeighbors) { targetT, _, predecessors ->
+            return TargetResult(getPath(predecessors, targetT!!))
         }
 
         error("Something went wrong")
     }
 
-    fun <T, R> findShortestDistance(start: T, target: R, getValue: (T) -> R, getNeighbors: (T) -> Collection<T>): Int {
-        djikstra(start, target, getValue, getNeighbors) { targetT, distances, _, _ ->
-            return distances.getValue(targetT)
+    fun <T : Any> findShortestPaths(start: T, getNeighbors: (T) -> Collection<T>): Result<T> {
+        djikstra(start, null, null, getNeighbors) { _, distances, predecessors ->
+            return Result(distances, predecessors)
         }
 
         error("Something went wrong")
@@ -19,10 +19,10 @@ object Djikstra {
 
     private inline fun <T, R> djikstra(
         start: T,
-        target: R,
-        getValue: (T) -> R,
+        target: R?,
+        noinline getValue: ((T) -> R)?,
         getNeighbors: (T) -> Collection<T>,
-        onFinished: (targetT: T, distances: Map<T, Int>, visits: Set<T>, predecessors: Map<T, T>) -> Unit
+        onFinished: (targetT: T?, distances: Map<T, Int>, predecessors: Map<T, T>) -> Unit
     ) {
         val visited = hashSetOf(start)
         val distance = mutableMapOf(start to 0).withDefault { Int.MAX_VALUE }
@@ -40,13 +40,15 @@ object Djikstra {
                 predecessors[adjacent] = current
                 queue.add(adjacent)
 
-                if (getValue(adjacent) == target) {
-                    onFinished(adjacent, distance, visited, predecessors)
+                if (target != null && getValue != null) {
+                    if (getValue.invoke(adjacent) == target) {
+                        onFinished(adjacent, distance, predecessors)
+                    }
                 }
             }
         }
 
-        error("Something went wrong")
+        onFinished(null, distance, predecessors)
     }
 
     private fun <T> getPath(predecessors: Map<T, T>, destination: T): List<T> {
@@ -59,4 +61,13 @@ object Djikstra {
         }
         return path
     }
+
+    data class TargetResult<T>(val path: List<T>) {
+        val steps = path.size - 1
+    }
+
+    data class Result<T>(
+        val distances: Map<T, Int>,
+        val predecessors: Map<T, T>
+    )
 }

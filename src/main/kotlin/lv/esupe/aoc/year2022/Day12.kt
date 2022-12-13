@@ -24,26 +24,25 @@ class Day12 : Puzzle<Int, Int>(2022, 12) {
         return djikstra(end, 'a') { current, adjacent -> adjacent - current >= -1 }
     }
 
-    private fun djikstra(start: Point, target: Char, checkElevation: (current: Int, adjacent: Int) -> Boolean): Int {
-        return Djikstra.findShortestDistance(
-            start = start,
-            target = target,
-            getValue = { input.getValue(it) },
-            getNeighbors = { point ->
-                point.neighbors(diagonal = false)
-                    .filter { input.containsKey(it) }
-                    .map { p1 -> p1 to input.getValue(p1) }
-                    .filter { (_, char) ->
-                        val currentElevation = input.getValue(point).elevation()
-                        val adjacentElevation = char.elevation()
-                        checkElevation(currentElevation, adjacentElevation)
-                    }
-                    .map { (point, _) -> point }
-            }
-        )
+    private fun djikstra(start: Point, target: Char, checkHeight: (current: Int, adjacent: Int) -> Boolean): Int {
+        return Djikstra
+            .findPath(
+                start = start,
+                target = target,
+                getValue = { input.getValue(it) },
+                getNeighbors = { point ->
+                    val currentHeight = input.getValue(point).height()
+                    point.neighbors(diagonal = false)
+                        .mapNotNull { n ->
+                            val adjacentHeight = input[n]?.height()
+                            n.takeIf { adjacentHeight != null && checkHeight(currentHeight, adjacentHeight) }
+                        }
+                }
+            )
+            .steps
     }
 
-    private fun Char.elevation() = when (this) {
+    private fun Char.height() = when (this) {
         'S' -> 'a'.code
         'E' -> 'z'.code
         else -> code
