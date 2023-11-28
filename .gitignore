@@ -112,3 +112,4 @@ gradle-app.setting
 !.idea/
 
 .secret
+/.idea/kotlinc.xml
