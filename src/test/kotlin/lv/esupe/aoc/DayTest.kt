@@ -58,21 +58,25 @@ abstract class DayTest<T, R> {
     }
 
     /**
-     * Tests the solution for the second part using `input` as the puzzle input. Runs the first part beforehand to
-     * ensure the second part can use the computations from the first part if necessary.
+     * Tests the solution for the second part using `input` as the puzzle input.
+     *
+     * @param runPartOne If `true`, runs the first part beforehand to ensure the second part can use the computations
+     *  from the first part if necessary.
      */
-    fun testPartTwo(input: String, expectedResult: R) {
-        testPartTwo(listOf(input), expectedResult)
+    fun testPartTwo(input: String, expectedResult: R, runPartOne: Boolean = true) {
+        testPartTwo(listOf(input), expectedResult, runPartOne)
     }
 
     /**
-     * Tests the solution for the second part using `input` as the lines of the input file. Runs the first part
-     * beforehand to ensure the second part can use the computations from the first part if necessary.
+     * Tests the solution for the second part using `input` as the lines of the input file.
+     *
+     * @param runPartOne If `true`, runs the first part beforehand to ensure the second part can use the computations
+     *  from the first part if necessary.
      */
-    fun testPartTwo(input: List<String>, expectedResult: R) {
+    fun testPartTwo(input: List<String>, expectedResult: R, runPartOne: Boolean = true) {
         Solver.inputProvider = { _, _ -> input }
         val p = puzzle()
-        p.solvePartOne()
-        assertEquals(expectedResult, p.solvePartTwo(), "Part 1, incorrect result")
+        if (runPartOne) p.solvePartOne()
+        assertEquals(expectedResult, p.solvePartTwo(), "Part 2, incorrect result")
     }
 }
