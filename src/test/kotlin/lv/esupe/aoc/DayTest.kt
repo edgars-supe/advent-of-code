@@ -1,5 +1,9 @@
 package lv.esupe.aoc
 
+import lv.esupe.aoc.solver.DefaultInputProvider
+import lv.esupe.aoc.solver.InputProvider
+import lv.esupe.aoc.solver.StringInputProvider
+import lv.esupe.aoc.solver.TestFileInputProvider
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 
@@ -9,16 +13,14 @@ abstract class DayTest<T, R> {
 
     @AfterEach
     fun tearDown() {
-        Solver.suffix = ""
-        Solver.inputProvider = Solver.defaultInputProvider
+        InputProvider.installedInputProvider = DefaultInputProvider()
     }
 
     /**
      * Tests the solution using the input file at `src/test/resources/input/year$year/day$day_$suffix.in`
      */
     fun runTest(suffix: String, part1: T, part2: R) {
-        Solver.suffix = suffix
-        Solver.inputProvider = Solver.defaultInputProvider
+        InputProvider.installedInputProvider = TestFileInputProvider(suffix)
         val p = puzzle()
         assertEquals(part1, p.solvePartOne(), "Part 1, incorrect result")
         assertEquals(part2, p.solvePartTwo(), "Part 2, incorrect result")
@@ -35,7 +37,7 @@ abstract class DayTest<T, R> {
      * Tests the solution using `input` as the lines of the input file.
      */
     fun test(input: List<String>, part1: T, part2: R) {
-        Solver.inputProvider = { _, _ -> input }
+        InputProvider.installedInputProvider = StringInputProvider(input)
         val p = puzzle()
         assertEquals(part1, p.solvePartOne(), "Part 1, incorrect result")
         assertEquals(part2, p.solvePartTwo(), "Part 2, incorrect result")
@@ -52,7 +54,7 @@ abstract class DayTest<T, R> {
      * Tests the solution for the first part using `input` as the lines of the input file.
      */
     fun testPartOne(input: List<String>, expectedResult: T) {
-        Solver.inputProvider = { _, _ -> input }
+        InputProvider.installedInputProvider = StringInputProvider(input)
         val p = puzzle()
         assertEquals(expectedResult, p.solvePartOne(), "Part 1, incorrect result")
     }
@@ -74,7 +76,7 @@ abstract class DayTest<T, R> {
      *  from the first part if necessary.
      */
     fun testPartTwo(input: List<String>, expectedResult: R, runPartOne: Boolean = true) {
-        Solver.inputProvider = { _, _ -> input }
+        InputProvider.installedInputProvider = StringInputProvider(input)
         val p = puzzle()
         if (runPartOne) p.solvePartOne()
         assertEquals(expectedResult, p.solvePartTwo(), "Part 2, incorrect result")
