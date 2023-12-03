@@ -1,5 +1,10 @@
 package lv.esupe.aoc
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.yield
 import lv.esupe.aoc.utils.bold
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -18,6 +23,8 @@ object Solver {
 
     var inputProvider: (year: Int, day: Int) -> List<String> = defaultInputProvider
 }
+
+private const val BENCH_DURATION = 60_000L
 
 fun <T : Any, R : Any> solve(benchmark: Boolean = true, block: () -> Puzzle<T, R>) {
     Solver.inputProvider = Solver.defaultInputProvider
@@ -39,25 +46,43 @@ private fun <T : Any, R : Any> printResult(block: () -> Puzzle<T, R>) {
 
 private fun benchmark(block: () -> Puzzle<*, *>) {
     print("Benchmarking...")
-    val startTime = System.currentTimeMillis()
     var initTime = 0L
     var partOneTime = 0L
     var partTwoTime = 0L
-    var times = 0
-    while (System.currentTimeMillis() - startTime < 60000) {
-        times++
-        if (times % 100 == 0) print("\rBenchmarking... ($times runs)")
-        lateinit var p: Puzzle<*, *>
-        initTime += measureNanoTime { p = block() }
-        partOneTime += measureNanoTime { p.solvePartOne() }
-        partTwoTime += measureNanoTime { p.solvePartTwo() }
+    var timesRun = 0
+    runBlocking {
+        val runner = launch(Dispatchers.IO) {
+            while (true) {
+                lateinit var p: Puzzle<*, *>
+                initTime += measureNanoTime { p = block() }
+                partOneTime += measureNanoTime { p.solvePartOne() }
+                partTwoTime += measureNanoTime { p.solvePartTwo() }
+                timesRun++
+                yield()
+            }
+        }
+        var elapsed = 0L
+        val counter = launch {
+            while (true) {
+                printBenchmarkProgress(elapsed, timesRun)
+                elapsed += 1000L
+                delay(1000L)
+            }
+        }
+        delay(BENCH_DURATION)
+        runner.cancel()
+        counter.cancel()
+        print("\r")
     }
-    initTime /= times
-    partOneTime /= times
-    partTwoTime /= times
+    initTime /= timesRun
+    partOneTime /= timesRun
+    partTwoTime /= timesRun
+    printBenchmark(timesRun, initTime.toMillis(), partOneTime.toMillis(), partTwoTime.toMillis())
+}
 
-    print("\n")
-    printBenchmark(times, initTime.toMillis(), partOneTime.toMillis(), partTwoTime.toMillis())
+private fun printBenchmarkProgress(elapsedTime: Long, timesRun: Int) {
+    val percentDone = elapsedTime.toFloat() / BENCH_DURATION * 100
+    print("\rBenchmarking... (${"%.0f%%".format(percentDone)}, $timesRun runs)")
 }
 
 private fun printBenchmark(times: Int, initTime: Float, partOneTime: Float, partTwoTime: Float) {
