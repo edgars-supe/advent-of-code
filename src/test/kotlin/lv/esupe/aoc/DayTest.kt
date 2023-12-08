@@ -46,17 +46,32 @@ abstract class DayTest<T, R> {
     /**
      * Tests the solution for the first part using `input` as the puzzle input.
      */
+    fun testPartOneWithFile(suffix: String, expectedResult: T) {
+        testPartOne(TestFileInputProvider(suffix), expectedResult)
+    }
+
+    /**
+     * Tests the solution for the first part using `input` as the puzzle input.
+     */
     fun testPartOne(input: String, expectedResult: T) {
-        testPartOne(listOf(input), expectedResult)
+        testPartOne(StringInputProvider(listOf(input)), expectedResult)
     }
 
     /**
      * Tests the solution for the first part using `input` as the lines of the input file.
      */
     fun testPartOne(input: List<String>, expectedResult: T) {
-        InputProvider.installedInputProvider = StringInputProvider(input)
+        testPartOne(StringInputProvider(input), expectedResult)
+    }
+
+    private fun testPartOne(inputProvider: InputProvider, expectedResult: T) {
+        InputProvider.installedInputProvider = inputProvider
         val p = puzzle()
         assertEquals(expectedResult, p.solvePartOne(), "Part 1, incorrect result")
+    }
+
+    fun testPartTwoWithFile(suffix: String, expectedResult: R, runPartOne: Boolean = true) {
+        testPartTwo(TestFileInputProvider(suffix), expectedResult, runPartOne)
     }
 
     /**
@@ -77,6 +92,13 @@ abstract class DayTest<T, R> {
      */
     fun testPartTwo(input: List<String>, expectedResult: R, runPartOne: Boolean = true) {
         InputProvider.installedInputProvider = StringInputProvider(input)
+        val p = puzzle()
+        if (runPartOne) p.solvePartOne()
+        assertEquals(expectedResult, p.solvePartTwo(), "Part 2, incorrect result")
+    }
+
+    private fun testPartTwo(inputProvider: InputProvider, expectedResult: R, runPartOne: Boolean = true) {
+        InputProvider.installedInputProvider = inputProvider
         val p = puzzle()
         if (runPartOne) p.solvePartOne()
         assertEquals(expectedResult, p.solvePartTwo(), "Part 2, incorrect result")

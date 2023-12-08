@@ -12,6 +12,13 @@ fun lcm(a: Int, b: Int, vararg numbers: Int): Int = when {
     else -> lcm(lcm(a, b), numbers.first(), *numbers.drop(1).toIntArray())
 }
 
+fun List<Long>.gcd(): Long = when (size) {
+    0 -> 0
+    1 -> get(0)
+    2 -> gcd(get(0), get(1))
+    else -> gcd(get(0), get(1), *drop(2).toLongArray())
+}
+
 fun gcd(a: Long, b: Long, vararg numbers: Long): Long = when {
     numbers.isEmpty() -> if (b == 0L) a else gcd(b, a % b)
     else -> gcd(gcd(a, b), numbers.first(), *numbers.drop(1).toLongArray())
@@ -20,6 +27,13 @@ fun gcd(a: Long, b: Long, vararg numbers: Long): Long = when {
 fun lcm(a: Long, b: Long, vararg numbers: Long): Long = when {
     numbers.isEmpty() -> abs(a * b) / gcd(a, b)
     else -> lcm(lcm(a, b), numbers.first(), *numbers.drop(1).toLongArray())
+}
+
+fun List<Long>.lcm(): Long = when (size) {
+    0 -> 0
+    1 -> get(0)
+    2 -> lcm(get(0), get(1))
+    else -> lcm(get(0), get(1), *drop(2).toLongArray())
 }
 
 infix fun Int.modulo(mod: Int): Int {
