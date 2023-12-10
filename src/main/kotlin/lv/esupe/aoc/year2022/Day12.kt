@@ -3,7 +3,7 @@ package lv.esupe.aoc.year2022
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.model.Point
 import lv.esupe.aoc.solve
-import lv.esupe.aoc.utils.Djikstra
+import lv.esupe.aoc.utils.Dijkstra
 
 fun main() = solve { Day12() }
 
@@ -25,7 +25,7 @@ class Day12 : Puzzle<Int, Int>(2022, 12) {
     }
 
     private fun djikstra(start: Point, target: Char, checkHeight: (current: Int, adjacent: Int) -> Boolean): Int {
-        return Djikstra
+        return Dijkstra
             .findPath(
                 start = start,
                 target = target,

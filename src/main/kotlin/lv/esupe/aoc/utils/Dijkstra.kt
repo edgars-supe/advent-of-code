@@ -1,6 +1,6 @@
 package lv.esupe.aoc.utils
 
-object Djikstra {
+object Dijkstra {
     fun <T : Any, R : Any> findPath(start: T, target: R, getValue: (T) -> R, getNeighbors: (T) -> Collection<T>): TargetResult<T> {
         djikstra(start, target, getValue, getNeighbors) { targetT, _, predecessors ->
             return TargetResult(getPath(predecessors, targetT!!))

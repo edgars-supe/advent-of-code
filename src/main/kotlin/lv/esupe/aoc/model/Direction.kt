@@ -14,8 +14,10 @@ enum class Direction(val point: Point) {
 
     operator fun times(by: Int) = point * by
 
+    operator fun unaryMinus() = opposite
+
     private fun getByOffset(offset: Int): Direction {
-        val values = values()
+        val values = entries
         val index = values.indexOf(this)
         return values[(index + offset) modulo values.size]
     }
