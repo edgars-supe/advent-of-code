@@ -17,18 +17,28 @@ fun <T> List<T>.repeat(times: Int): List<T> {
     return list
 }
 
-inline fun <T> List<T>.forAllPairs(block: (T, T) -> Unit) {
-    for (i in 0 until size) {
+inline fun <T> List<T>.forAllPairs(action: (T, T) -> Unit) {
+    for (i in indices) {
         for (j in (i + 1) until size) {
-            block(get(i), get(j))
+            action(get(i), get(j))
         }
     }
 }
 
-inline fun <T> List<T>.forAllUniquePairs(block: (T, T) -> Unit) {
+inline fun <T, R> List<T>.mapAllPairs(mapper: (T, T) -> R): List<R> {
+    val list = mutableListOf<R>()
+    for (i in indices) {
+        for (j in (i + 1) until size) {
+            list += mapper(get(i), get(j))
+        }
+    }
+    return list
+}
+
+inline fun <T> List<T>.forAllUniquePairs(action: (T, T) -> Unit) {
     forAllPairs { i, j ->
-        block(i, j)
-        block(j, i)
+        action(i, j)
+        action(j, i)
     }
 }
 
