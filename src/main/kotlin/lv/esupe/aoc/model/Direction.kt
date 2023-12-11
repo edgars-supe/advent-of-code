@@ -12,6 +12,8 @@ enum class Direction(val point: Point) {
     val right: Direction get() = getByOffset(1)
     val opposite: Direction get() = getByOffset(2)
 
+    val pointL: PointL = point.toLong()
+
     operator fun times(by: Int) = point * by
 
     operator fun unaryMinus() = opposite
