@@ -19,14 +19,14 @@ class Day1 : Puzzle<Int, Int>(2024, 1) {
     override fun solvePartOne(): Int {
         val ls = left.sorted()
         val rs = right.sorted()
-        return ls.foldIndexed(0) { idx, acc, i ->
-            acc + (i - rs[idx]).absoluteValue
-        }
+        return ls
+            .zip(rs) { l, r -> (l - r).absoluteValue }
+            .sum()
     }
 
     override fun solvePartTwo(): Int {
-        return left.fold(0) { acc, i ->
-            acc + i * right.count { it == i }
+        return left.sumOf { l ->
+            l * right.count { r -> r == l }
         }
     }
 }
