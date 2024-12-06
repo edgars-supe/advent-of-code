@@ -8,6 +8,6 @@ class Day5Test : DayTest<Int, Int>() {
 
     @Test
     fun day5_1() {
-        runTest("_1", 143, 0)
+        runTest("_1", 143, 123)
     }
 }
