@@ -27,7 +27,8 @@ inline fun LongRange.over(other: LongRange, action: (Long, Long) -> Unit) {
     }
 }
 
-fun List<String>.toGrid() = this
+fun List<String>.toGrid(invertY: Boolean = false) = this
+    .let { if (invertY) it.asReversed() else it }
     .flatMapIndexed { col, line ->
         line.mapIndexed { row, char ->
             Point(row, col) to char
