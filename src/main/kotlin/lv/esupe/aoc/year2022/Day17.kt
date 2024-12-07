@@ -2,7 +2,7 @@ package lv.esupe.aoc.year2022
 
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.model.Direction
-import lv.esupe.aoc.model.Grid
+import lv.esupe.aoc.model.GridOld
 import lv.esupe.aoc.model.Point
 import lv.esupe.aoc.solve
 import lv.esupe.aoc.utils.repeat
@@ -28,7 +28,7 @@ class Day17 : Puzzle<Int, Long>(2022, 17) {
     private val startAboveLast = 3
 
     override fun solvePartOne(): Int {
-        val grid = Grid('.')
+        val grid = GridOld('.')
         val jeterator = input.iterator()
         val shaperator = shapes.take(2022).iterator()
         while (shaperator.hasNext()) {

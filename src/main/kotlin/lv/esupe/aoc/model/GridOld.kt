@@ -2,7 +2,8 @@ package lv.esupe.aoc.model
 
 import kotlin.math.absoluteValue
 
-class Grid<T : Any>(val default: T) {
+@Deprecated("Use Grid")
+class GridOld<T : Any>(val default: T) {
     private var offsetX = Int.MAX_VALUE
     private var offsetY = Int.MAX_VALUE
 
@@ -152,16 +153,16 @@ class Grid<T : Any>(val default: T) {
     }
 
     companion object {
-        fun from(lines: List<String>, default: Char = '.'): Grid<Char> {
-            val grid = Grid(default)
+        fun from(lines: List<String>, default: Char = '.'): GridOld<Char> {
+            val grid = GridOld(default)
             lines.forEachIndexed { y, line ->
                 line.forEachIndexed { x, char -> grid[x, y] = char }
             }
             return grid
         }
 
-        fun <T : Any> from(lines: List<String>, default: T, transform: (Char) -> T): Grid<T> {
-            val grid = Grid(default)
+        fun <T : Any> from(lines: List<String>, default: T, transform: (Char) -> T): GridOld<T> {
+            val grid = GridOld(default)
             lines.forEachIndexed { y, line ->
                 line.forEachIndexed { x, char -> grid[x, y] = transform(char) }
             }
