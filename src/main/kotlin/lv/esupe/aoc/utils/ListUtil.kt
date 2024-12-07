@@ -72,3 +72,5 @@ fun <T> List<T>.chunkedBy(selector: (T) -> Boolean): List<List<T>> =
         else acc.last().add(item)
         acc
     }
+
+operator fun <T> T.plus(list: List<T>): List<T> = buildList { add(this@plus); addAll(list) }
