@@ -2,7 +2,7 @@ package lv.esupe.aoc.year2024
 
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
-import lv.esupe.aoc.utils.plus
+import lv.esupe.aoc.utils.prependTo
 
 fun main() = solve { Day7() }
 
@@ -32,7 +32,7 @@ class Day7 : Puzzle<Long, Long>(2024, 7) {
         if (numbers.size == 1) return expected == numbers.first()
         val (a, b) = numbers.take(2)
         val rem = numbers.drop(2)
-        return operations.any { op -> checkEquation(expected, op(a, b) + rem, operations) }
+        return operations.any { op -> checkEquation(expected, op(a, b) prependTo rem, operations) }
     }
 
     private fun concat(a: Long, b: Long): Long = "$a$b".toLong()

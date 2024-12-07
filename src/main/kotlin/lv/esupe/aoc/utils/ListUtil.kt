@@ -73,4 +73,4 @@ fun <T> List<T>.chunkedBy(selector: (T) -> Boolean): List<List<T>> =
         acc
     }
 
-operator fun <T> T.plus(list: List<T>): List<T> = buildList { add(this@plus); addAll(list) }
+infix fun <T> T.prependTo(list: List<T>): List<T> = buildList { add(this@prependTo); addAll(list) }
