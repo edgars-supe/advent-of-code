@@ -2,16 +2,14 @@ package lv.esupe.aoc.year2024
 
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.model.Direction
+import lv.esupe.aoc.model.Grid
 import lv.esupe.aoc.model.Point
 import lv.esupe.aoc.solve
-import lv.esupe.aoc.utils.toGrid
 
 fun main() = solve { Day6() }
 
 class Day6 : Puzzle<Int, Int>(2024, 6) {
-    override val input = rawInput.toGrid(invertY = false)
-    private val width = rawInput.first().length
-    private val height = rawInput.size
+    override val input = Grid.from(rawInput, invertY = true, insertDefault = false)
     private val guardStart = input.entries
         .first { (_, value) -> value == GUARD }
         .key
@@ -33,25 +31,21 @@ class Day6 : Puzzle<Int, Int>(2024, 6) {
 
     private fun traverse(map: Map<Point, Char>, start: Point, extraObstacle: Point? = null): Set<Pair<Point, Direction>>? {
         var curr = start
-        var direction = Direction.South
+        var direction = Direction.North
         val path = mutableSetOf<Pair<Point, Direction>>()
 
-        while (isInGrid(curr)) {
+        while (input.isInBounds(curr)) {
             val pair = curr to direction
             if (pair in path) return null
             path += pair
-            val check = curr + direction.point
+            val check = curr.move(direction)
             if (map[check] == OBSTACLE || check == extraObstacle) {
-                direction = direction.left
+                direction = direction.right
             } else {
                 curr = check
             }
         }
         return path
-    }
-
-    private fun isInGrid(point: Point): Boolean {
-        return point.x in 0 until width && point.y in 0 until height
     }
 
     companion object {
