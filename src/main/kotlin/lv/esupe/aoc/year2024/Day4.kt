@@ -1,14 +1,14 @@
 package lv.esupe.aoc.year2024
 
 import lv.esupe.aoc.Puzzle
+import lv.esupe.aoc.model.Grid
 import lv.esupe.aoc.model.Point
 import lv.esupe.aoc.solve
-import lv.esupe.aoc.utils.toGrid
 
 fun main() = solve { Day4() }
 
 class Day4 : Puzzle<Int, Int>(2024, 4) {
-    override val input = rawInput.toGrid()
+    override val input = Grid.from(rawInput, invertY = true)
 
     override fun solvePartOne(): Int {
         return input.asSequence()
