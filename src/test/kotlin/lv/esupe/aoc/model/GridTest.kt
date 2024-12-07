@@ -37,7 +37,7 @@ class GridTest {
             "fghij",
             "....."
         )
-        val subject = Grid.from(input, default = '.')
+        val subject = Grid.from(input, default = '.', insertDefault = true)
         assertEquals(5, subject.width)
         assertEquals(6, subject.height)
         assertEquals('1', subject[0, 1])
