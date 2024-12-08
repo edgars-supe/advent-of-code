@@ -35,6 +35,10 @@ inline fun <T, R> List<T>.mapAllPairs(mapper: (T, T) -> R): List<R> {
     return list
 }
 
+fun <T> List<T>.getAllPairs(): List<Pair<T, T>> {
+    return mapAllPairs { a, b -> a to b }
+}
+
 inline fun <T> List<T>.forAllUniquePairs(action: (T, T) -> Unit) {
     forAllPairs { i, j ->
         action(i, j)
