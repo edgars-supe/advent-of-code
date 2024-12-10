@@ -3,7 +3,7 @@ package lv.esupe.aoc.year2023
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.model.Point
 import lv.esupe.aoc.solve
-import lv.esupe.aoc.utils.Dijkstra
+import lv.esupe.aoc.utils.Paths
 import lv.esupe.aoc.utils.toGrid
 
 fun main() = solve { Day10() }
@@ -13,7 +13,7 @@ class Day10 : Puzzle<Int, Int>(2023, 10) {
 
     override fun solvePartOne(): Int {
         val start = input.entries.first { (_, c) -> c == 'S' }.key
-        val result = Dijkstra.findShortestPaths(start) { p -> getNeighbors(p) }
+        val result = Paths.findShortestPaths(start) { p -> getNeighbors(p) }
         return result.distances.maxOf { (_, dist) -> dist }
     }
 
