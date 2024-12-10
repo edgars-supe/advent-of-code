@@ -1,31 +1,31 @@
 package lv.esupe.aoc.utils
 
 object Dijkstra {
-    fun <T : Any, R : Any> findPath(start: T, target: R, getValue: (T) -> R, getNeighbors: (T) -> Collection<T>): TargetResult<T> {
-        djikstra(start, target, getValue, getNeighbors) { targetT, _, predecessors ->
-            return TargetResult(getPath(predecessors, targetT!!))
-        }
 
-        error("Something went wrong")
+    fun <T : Any, R : Any> findPath(
+        start: T,
+        target: R,
+        getValue: (T) -> R,
+        getNeighbors: (T) -> Collection<T>
+    ) : TargetResult<T>? {
+        val result = dijkstra(start, target, getValue, getNeighbors)
+        return result.targetT?.let { targetT ->
+            TargetResult(path = getPath(result.predecessors, targetT))
+        }
     }
 
     fun <T : Any> findShortestPaths(start: T, getNeighbors: (T) -> Collection<T>): Result<T> {
-        djikstra(start, null, null, getNeighbors) { _, distances, predecessors ->
-            return Result(distances, predecessors)
-        }
-
-        error("Something went wrong")
+        return dijkstra(start, null, null, getNeighbors)
     }
 
-    private inline fun <T, R> djikstra(
+    private inline fun <T, R> dijkstra(
         start: T,
         target: R?,
         noinline getValue: ((T) -> R)?,
-        getNeighbors: (T) -> Collection<T>,
-        onFinished: (targetT: T?, distances: Map<T, Int>, predecessors: Map<T, T>) -> Unit
-    ) {
+        getNeighbors: (T) -> Collection<T>
+    ) : Result<T> {
         val visited = hashSetOf(start)
-        val distance = mutableMapOf(start to 0).withDefault { Int.MAX_VALUE }
+        val distances: MutableMap<T, Int> = mutableMapOf(start to 0).withDefault { Int.MAX_VALUE }
         val predecessors = mutableMapOf<T, T>()
         val queue = ArrayDeque<T>()
         queue.add(start)
@@ -36,19 +36,19 @@ object Dijkstra {
 
             for (adjacent in adjacents) {
                 visited.add(adjacent)
-                distance[adjacent] = distance.getValue(current) + 1
+                distances[adjacent] = distances.getValue(current) + 1
                 predecessors[adjacent] = current
                 queue.add(adjacent)
 
                 if (target != null && getValue != null) {
                     if (getValue.invoke(adjacent) == target) {
-                        onFinished(adjacent, distance, predecessors)
+                        return Result(adjacent, distances, predecessors)
                     }
                 }
             }
         }
 
-        onFinished(null, distance, predecessors)
+        return Result(targetT = null, distances, predecessors)
     }
 
     private fun <T> getPath(predecessors: Map<T, T>, destination: T): List<T> {
@@ -67,6 +67,7 @@ object Dijkstra {
     }
 
     data class Result<T>(
+        val targetT: T?,
         val distances: Map<T, Int>,
         val predecessors: Map<T, T>
     )

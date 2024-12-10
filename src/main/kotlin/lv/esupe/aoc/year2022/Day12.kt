@@ -39,7 +39,8 @@ class Day12 : Puzzle<Int, Int>(2022, 12) {
                         }
                 }
             )
-            .steps
+            ?.steps
+            ?: 0
     }
 
     private fun Char.height() = when (this) {
