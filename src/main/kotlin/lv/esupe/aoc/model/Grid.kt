@@ -64,6 +64,18 @@ class Grid<T : Any> private constructor(
         return x in minX..maxX && y in minY..maxY
     }
 
+    fun getNeighbors(point: Point, ignoreDefault: Boolean, diagonal: Boolean): Set<Pair<Point, T>> {
+        if (point !in this) return emptySet()
+        return point.neighbors(diagonal)
+            .filter { it in this }
+            .fold(mutableSetOf()) { set, p ->
+                val value = get(p)
+                if (value != null && !(value == default && ignoreDefault)) {
+                    set += p to value
+                }
+                set
+            }
+    }
 
     private fun adjust(point: Point) {
         if (minX > point.x) minX = point.x
