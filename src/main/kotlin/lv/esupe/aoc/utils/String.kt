@@ -1,5 +1,6 @@
 package lv.esupe.aoc.utils
 
+private val NUMBER_REGEX = """-?\d+""".toRegex()
 
 inline fun String.charByChar(other: String, crossinline block: (Char?, Char?) -> Unit) {
     val max = maxOf(length, other.length)
@@ -11,3 +12,5 @@ inline fun String.charByChar(other: String, crossinline block: (Char?, Char?) ->
 }
 
 fun String.count(char: Char): Int = count { it == char }
+
+fun String.findAllInts(): List<Int> = NUMBER_REGEX.findAll(this).map { it.value.toInt() }.toList()
