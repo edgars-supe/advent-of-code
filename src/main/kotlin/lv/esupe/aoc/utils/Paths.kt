@@ -1,5 +1,7 @@
 package lv.esupe.aoc.utils
 
+import java.util.PriorityQueue
+
 object Paths {
 
     fun <T : Any, R : Any> findPath(
@@ -77,7 +79,45 @@ object Paths {
         return Result(targetT = null, distances, predecessors)
     }
 
-    private fun <T> getPath(predecessors: Map<T, T>, destination: T): List<T> {
+    private data class PathNode<T>(val node: T, val distance: Int, val path: List<T>)
+
+    fun <T, R> weightedDijkstra(
+        start: T,
+        target: R?,
+        getValue: ((T) -> R)?,
+        getNeighbors: (T) -> Collection<T>,
+        cost: (List<T>, T) -> Int
+    ): Result<T> {
+        val distances: MutableMap<T, Int> = mutableMapOf(start to 0).withDefault { Int.MAX_VALUE }
+        val predecessors = mutableMapOf<T, T>()
+        val priorityQueue = PriorityQueue(compareBy<PathNode<T>> { it.distance })
+        priorityQueue.add(PathNode(start, 0, listOf(start)))
+
+        while (priorityQueue.isNotEmpty()) {
+            val (current, currentDistance, currentPath) = priorityQueue.poll()
+
+            // Skip if this node's distance is outdated
+            if (currentDistance > distances.getValue(current)) continue
+
+            for (neighbor in getNeighbors(current)) {
+                val newDistance = currentDistance + cost(currentPath, neighbor)
+                if (newDistance < distances.getValue(neighbor)) {
+                    distances[neighbor] = newDistance
+                    predecessors[neighbor] = current
+                    priorityQueue.add(PathNode(neighbor, newDistance, currentPath + neighbor))
+                }
+
+                // If a target is specified, check if it's reached
+                if (target != null && getValue != null && getValue.invoke(neighbor) == target) {
+                    return Result(neighbor, distances, predecessors)
+                }
+            }
+        }
+
+        return Result(targetT = null, distances, predecessors)
+    }
+
+    fun <T> getPath(predecessors: Map<T, T>, destination: T): List<T> {
         val path = mutableListOf<T>()
         var crawl = destination
         path.add(destination)
