@@ -16,6 +16,7 @@ object PuzzleRunner {
 
     fun runPuzzle(benchmark: Boolean, puzzleProvider: () -> Puzzle<*, *>) {
         InputProvider.installedInputProvider = DefaultInputProvider()
+        print("Running solution...")
         printResult(puzzleProvider)
         if (benchmark) {
             println()
@@ -27,6 +28,7 @@ object PuzzleRunner {
         val puzzle = block()
         val partOneResult = puzzle.solvePartOne()?.bold("33")
         val partTwoResult = puzzle.solvePartTwo()?.bold("33")
+        print("\r")
         println("Year ${puzzle.year}, Day ${puzzle.day}".bold())
         println("Part 1: $partOneResult")
         println("Part 2: $partTwoResult")
