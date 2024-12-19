@@ -86,3 +86,13 @@ fun <T> MutableList<T>.replace(element: T, newElement: T): Boolean {
     remove(element)
     return true
 }
+
+fun <T> List<T>.at(index: Int): T {
+    return if (index >= 0) get(index)
+    else get(size + index)
+}
+
+fun <T> List<T>.atOrNull(index: Int): T? {
+    return if (index >= 0) getOrNull(index)
+    else getOrNull(size + index)
+}
