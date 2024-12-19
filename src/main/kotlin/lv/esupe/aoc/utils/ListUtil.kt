@@ -78,3 +78,11 @@ fun <T> List<T>.chunkedBy(selector: (T) -> Boolean): List<List<T>> =
     }
 
 infix fun <T> T.prependTo(list: List<T>): List<T> = buildList { add(this@prependTo); addAll(list) }
+
+fun <T> MutableList<T>.replace(element: T, newElement: T): Boolean {
+    if (element !in this) return false
+    val idx = indexOf(element)
+    add(idx, newElement)
+    remove(element)
+    return true
+}

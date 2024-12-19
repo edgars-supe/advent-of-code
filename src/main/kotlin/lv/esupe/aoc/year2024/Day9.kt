@@ -2,6 +2,7 @@ package lv.esupe.aoc.year2024
 
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
+import lv.esupe.aoc.utils.replace
 
 fun main() = solve { Day9() }
 
@@ -52,6 +53,47 @@ class Day9 : Puzzle<Long, Long>(2024, 9) {
     }
 
     override fun solvePartTwo(): Long {
-        return 0
+        var block = 0
+        var fileId = 0
+        val drive = fileBlocks.zip(emptyBlocks + 0)
+            .flatMap { (f, e) ->
+                val file = BlockSet.File(fileId++, block, f)
+                block += f
+                val empty = BlockSet.Empty(block, e)
+                block += e
+                listOf(file, empty)
+            }
+            .toMutableList()
+        val files = drive.filterIsInstance<BlockSet.File>()
+        for (file in files.asReversed()) {
+            val empty = drive
+                .firstOrNull { b -> b.startIdx < file.startIdx && b is BlockSet.Empty && b.size >= file.size } as? BlockSet.Empty
+                ?: continue
+            val newFile = file.copy(startIdx = empty.startIdx)
+            val emptyIdx = drive.indexOf(empty)
+            val fileEmpty = BlockSet.Empty(file.startIdx, file.size)
+            drive.replace(file, fileEmpty)
+            drive.add(emptyIdx, newFile)
+            if (empty.size == file.size) {
+                drive.remove(empty)
+            } else {
+                val newEmpty = empty.copy(size = empty.size - file.size, startIdx = empty.startIdx + file.size)
+                drive.replace(empty, newEmpty)
+            }
+        }
+        return drive.filterIsInstance<BlockSet.File>().sumOf { it.checksum() }
+    }
+
+    private sealed class BlockSet {
+        abstract val startIdx: Int
+        abstract val size: Int
+
+        data class File(val id: Int, override val startIdx: Int, override val size: Int) : BlockSet() {
+            fun checksum(): Long {
+                return (startIdx until startIdx + size).sum() * id.toLong()
+            }
+        }
+
+        data class Empty(override val startIdx: Int, override val size: Int) : BlockSet()
     }
 }
