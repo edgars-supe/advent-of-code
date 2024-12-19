@@ -7,6 +7,8 @@ class Grid<T : Any> private constructor(
     private val delegate: MutableMap<Point, T> = mutableMapOf()
 ) : MutableMap<Point, T> by delegate {
 
+    constructor(grid: Grid<T>) : this(grid.default, grid.invertY, grid.insertDefault, grid.delegate.toMutableMap())
+
     val height
         get() = maxY - minY + 1
     val width
@@ -31,7 +33,10 @@ class Grid<T : Any> private constructor(
     }
 
     override fun put(key: Point, value: T): T? {
-        if (!insertDefault && value == default) return null
+        if (!insertDefault && value == default) {
+            remove(key)
+            return null
+        }
         adjust(key)
         return delegate.put(key, value)
     }
@@ -42,6 +47,14 @@ class Grid<T : Any> private constructor(
             else from.filterValues { it != default }
         map.keys.forEach { point -> adjust(point) }
         delegate.putAll(map)
+    }
+
+    override fun clear() {
+        delegate.clear()
+        minX = 0
+        maxX = 0
+        minY = 0
+        maxY = 0
     }
 
     operator fun get(x: Int, y: Int): T? {
@@ -65,11 +78,11 @@ class Grid<T : Any> private constructor(
     }
 
     fun getNeighbors(point: Point, ignoreDefault: Boolean, diagonal: Boolean): Set<Pair<Point, T>> {
-        if (point !in this) return emptySet()
+        if (!isInBounds(point)) return emptySet()
         return point.neighbors(diagonal)
-            .filter { it in this }
+            .filter { isInBounds(it) }
             .fold(mutableSetOf()) { set, p ->
-                val value = get(p)
+                val value = get(p) ?: default
                 if (value != null && !(value == default && ignoreDefault)) {
                     set += p to value
                 }
@@ -108,6 +121,10 @@ class Grid<T : Any> private constructor(
     }
 
     companion object {
+        fun <T : Any> blank(default: T?, invertY: Boolean, insertDefault: Boolean): Grid<T> {
+            return Grid(default,  invertY, insertDefault)
+        }
+
         fun from(
             lines: List<String>,
             default: Char = '.',
