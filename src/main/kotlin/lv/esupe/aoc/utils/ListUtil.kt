@@ -87,6 +87,14 @@ fun <T> List<T>.chunkedBy(selector: (T) -> Boolean): List<List<T>> =
         acc
     }
 
+fun <T> List<T>.removedAt(index: Int): List<T> {
+    return when (index) {
+        0 -> drop(1)
+        lastIndex -> dropLast(1)
+        else -> take(index) + drop(index + 1)
+    }
+}
+
 infix fun <T> T.prependTo(list: List<T>): List<T> = buildList { add(this@prependTo); addAll(list) }
 
 fun <T> MutableList<T>.replace(element: T, newElement: T): Boolean {
