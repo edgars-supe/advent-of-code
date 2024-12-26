@@ -35,6 +35,16 @@ inline fun <T, R> List<T>.mapAllPairs(mapper: (T, T) -> R): List<R> {
     return list
 }
 
+inline fun <T, R> List<T>.mapAllPairsNonNull(mapper: (T, T) -> R?): List<R> {
+    val list = mutableListOf<R>()
+    for (i in indices) {
+        for (j in (i + 1) until size) {
+            mapper(get(i), get(j))?.let { list += it }
+        }
+    }
+    return list
+}
+
 fun <T> List<T>.getAllPairs(): List<Pair<T, T>> {
     return mapAllPairs { a, b -> a to b }
 }
