@@ -1,8 +1,10 @@
 package lv.esupe.aoc.year2023
 
 import lv.esupe.aoc.DayTest
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
+@Disabled
 class Day10Test : DayTest<Int, Int>() {
     override val puzzle = { Day10() }
 

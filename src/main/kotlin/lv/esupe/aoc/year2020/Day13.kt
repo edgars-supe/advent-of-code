@@ -2,8 +2,6 @@ package lv.esupe.aoc.year2020
 
 import lv.esupe.aoc.Puzzle
 import lv.esupe.aoc.solve
-import lv.esupe.aoc.utils.lcm
-import kotlin.math.ceil
 
 fun main() = solve { Day13() }
 
@@ -22,6 +20,6 @@ class Day13 : Puzzle<Int, Long>(2020, 13) {
     }
 
     override fun solvePartTwo(): Long {
-        return -2
+        return 0
     }
 }

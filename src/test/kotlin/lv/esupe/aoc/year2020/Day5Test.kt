@@ -8,11 +8,11 @@ class Day5Test : DayTest<Int, Int>() {
 
     @Test
     fun day5_1() {
-        runTest("_1", 820, -2)
+        testPartOneWithFile("_1", 820)
     }
 
     @Test
     fun day5_2() {
-        runTest("_2", 357, -2)
+        testPartOneWithFile("_2", 357)
     }
 }

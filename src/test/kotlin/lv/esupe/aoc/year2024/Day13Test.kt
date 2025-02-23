@@ -8,6 +8,6 @@ class Day13Test : DayTest<Long, Long>() {
 
     @Test
     fun day13_1() {
-        runTest("_1", 480, 0)
+        runTest("_1", 480, 875318608908L)
     }
 }
