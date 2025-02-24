@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "2.1.10"
+    alias(libs.plugins.kotlin.jvm)
 }
 
 repositories {
@@ -20,9 +20,10 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.12.0")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation(libs.kotlin.coroutines)
+
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 tasks.test {
