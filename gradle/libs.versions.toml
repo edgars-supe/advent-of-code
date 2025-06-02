@@ -1,5 +1,5 @@
 [versions]
-junit = "5.12.1"
+junit = "5.13.0"
 junit-platform = "1.12.1"
 kotlin = "2.1.20"
 kotlin-coroutines = "1.10.1"
