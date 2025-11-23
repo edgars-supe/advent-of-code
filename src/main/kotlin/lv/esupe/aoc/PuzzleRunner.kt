@@ -64,6 +64,7 @@ object PuzzleRunner {
             counter.cancel()
             print("\r")
         }
+        print("\rBenchmarking complete!\r\n\n")
         initTime /= timesRun
         partOneTime /= timesRun
         partTwoTime /= timesRun
