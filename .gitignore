@@ -110,3 +110,4 @@ gradle-app.setting
 
 .secret
 /.idea/kotlinc.xml
+/src/main/resources/input/
