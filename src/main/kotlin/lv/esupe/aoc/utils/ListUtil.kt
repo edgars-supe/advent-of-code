@@ -114,3 +114,9 @@ fun <T> List<T>.atOrNull(index: Int): T? {
     return if (index >= 0) getOrNull(index)
     else getOrNull(size + index)
 }
+
+fun <T> List<T>.allEqual(): Boolean {
+    if (isEmpty()) return false
+    val first = first()
+    return drop(1).all { it == first }
+}
