@@ -31,18 +31,19 @@ class Day5 : Puzzle<Int, Long>(2025, 5) {
     }
 
     override fun solvePartTwo(): Long {
-        val queue = ranges.toMutableList()
-        val condensed = mutableListOf<LongRange>()
-        while (queue.isNotEmpty()) {
-            val rangeA = queue.removeAt(0)
-            val rangeB = queue.firstOrNull { rangeB -> rangeA overlaps rangeB }
-            if (rangeB != null) {
-                queue.remove(rangeB)
-                queue.add(rangeA.mergeWith(rangeB))
-            } else {
-                condensed.add(rangeA)
+        return ranges
+            .fold(mutableListOf<LongRange>()) { condensed, rangeA ->
+                val rangeB = condensed.lastOrNull()
+                if (rangeB == null) {
+                    condensed.add(rangeA)
+                } else if (rangeA overlaps rangeB) {
+                    condensed.remove(rangeB)
+                    condensed.add(rangeA.mergeWith(rangeB))
+                } else {
+                    condensed.add(rangeA)
+                }
+                condensed
             }
-        }
-        return condensed.sumOf { range -> range.last - range.first + 1 }
+            .sumOf { range -> range.last - range.first + 1 }
     }
 }
