@@ -120,3 +120,16 @@ fun <T> List<T>.allEqual(): Boolean {
     val first = first()
     return drop(1).all { it == first }
 }
+
+fun <T> List<List<T>>.transposed(): List<List<T>> {
+    require(isNotEmpty()) { "Matrix must not be empty." }
+    val rowCount = size
+    val colCount = first().size
+    require(all { it.size == colCount }) { "All rows must have the same length." }
+
+    return List(colCount) { col ->
+        List(rowCount) { row ->
+            elementAt(row).elementAt(col)
+        }
+    }
+}
